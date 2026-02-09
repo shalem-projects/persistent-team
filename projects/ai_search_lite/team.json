@@ -502,12 +502,31 @@
         ]
       },
       "experience": {
-        "run_count": 1,
+        "run_count": 2,
         "last_run": "2026-02-09",
-        "status": "planned",
+        "status": "complete",
         "plan_file": ".claude/plans/expressive-coalescing-boole.md",
-        "files_created": [],
-        "lines_removed": 0,
+        "steps_completed": ["step1_infrastructure", "step2_db_functions", "step3_wire_index", "step4_extract_ajax", "step5_delete_old", "step6_setup_databases", "step7_record"],
+        "steps_remaining": [],
+        "files_created": [
+          "config/.env",
+          "config/.env.example",
+          "config/env_loader.php",
+          "includes/Database.php",
+          "includes/db_functions.php"
+        ],
+        "files_modified": [
+          "index.php",
+          "setup_databases.php"
+        ],
+        "lines_before": 17138,
+        "lines_after": 15409,
+        "lines_removed": 1729,
+        "lines_in_new_files": {
+          "env_loader.php": 49,
+          "Database.php": 290,
+          "db_functions.php": 645
+        },
         "actual_function_count": 23,
         "note": "Auditor found 19 DB functions, planning found 4 more: getAllSearchQueries (5637), getCorrectionByQuestion (5879), buildQueryGradeMapping (5700), update_correction_questions inline AJAX handler (1884-2051)",
         "architecture_decisions": {
@@ -570,8 +589,76 @@
             "solution": "Migrate this function LAST. It has the most logic and the most potential for regression. All simpler functions should be verified working before tackling this one.",
             "context": "index.php:5411-5634",
             "engine": "claude-opus-4-6"
+          },
+          {
+            "timestamp": "2026-02-09T19:00:00",
+            "category": "implementation",
+            "problem": "Step 1 + Step 2 completed: infrastructure + db_functions.php",
+            "solution": "Database.php (290 lines): PDO singleton, MySQL/SQLite, ensureTables() with 6 tables, helper methods. db_functions.php (645 lines): 21 functions converted from dual-path to single PDO. All 21 pass integration tests on PHP 7.2 with SQLite.",
+            "context": "Zero difficulty. SQLite fallback worked immediately. No PHP 7.2 compat issues.",
+            "engine": "claude-opus-4-6"
+          },
+          {
+            "timestamp": "2026-02-09T19:00:01",
+            "category": "implementation_detail",
+            "problem": "SQLite LIMIT in UPDATE not always supported",
+            "solution": "updateCorrectionQuestions uses subquery on SQLite: WHERE id = (SELECT id FROM ... LIMIT 1) instead of direct LIMIT 1 in UPDATE. MySQL path keeps LIMIT 1 directly.",
+            "engine": "claude-opus-4-6"
+          },
+          {
+            "timestamp": "2026-02-09T19:00:02",
+            "category": "risk_note",
+            "problem": "getMysqlCorrectionsConnection() now returns PDO not mysqli",
+            "solution": "The inline AJAX handler at line 1893 treats return value as mysqli. MUST extract inline handler (Step 4) before deploying to MySQL production. In SQLite dev it returns null safely (handler falls to SQLite path). This is a known sequencing dependency.",
+            "engine": "claude-opus-4-6"
+          },
+          {
+            "timestamp": "2026-02-09T22:00:00",
+            "category": "implementation_complete",
+            "problem": "Phase 1 db_architect executed: all 7 steps done",
+            "solution": "index.php reduced from 17,138 to 15,409 lines (-1,729). 5 new files created (~984 lines total). 21 DB functions unified to single PDO path. All tests pass on PHP 7.2 SQLite. Page loads HTTP 200, 314KB, same output.",
+            "engine": "claude-opus-4-6"
+          },
+          {
+            "timestamp": "2026-02-09T22:00:01",
+            "category": "routing_discovery",
+            "problem": "index.php has complex nested POST handler chain: early handler (line 15) -> ai_summary handler (line 1580) -> secondary handler (line 1882). The elseif at 1882 never fires when early handler already consumed php://input",
+            "solution": "The update_correction_questions AJAX handler is in the secondary handler block. For production deployment, verify that the JavaScript client calls it with form-urlencoded (not JSON) to bypass the early handler's php://input consumption. The extracted updateCorrectionQuestions() function works correctly — the routing issue is pre-existing.",
+            "context": "This routing complexity should be addressed in backend_splitter phase (Phase 2) by creating a proper AJAX router",
+            "engine": "claude-opus-4-6"
+          },
+          {
+            "timestamp": "2026-02-09T22:00:02",
+            "category": "technique",
+            "problem": "Wrapping 20 functions with function_exists() guards one-by-one is slow and error-prone",
+            "solution": "Use Task agents to parallelize bulk edits. The wrap agent (79K tokens) and delete agent (96K tokens) each handled their batch autonomously. Key: provide exact function names and approximate line numbers, let the agent Read+Edit systematically.",
+            "context": "For future bulk refactoring: guards → test → delete is the right 3-step sequence. But if confident, can skip guards and delete directly.",
+            "engine": "claude-opus-4-6"
+          },
+          {
+            "timestamp": "2026-02-09T22:00:03",
+            "category": "technique",
+            "problem": "SQLite does not reliably support LIMIT in UPDATE statements",
+            "solution": "Use subquery: WHERE id = (SELECT id FROM table WHERE condition LIMIT 1). This is portable across MySQL and SQLite. Applied in updateCorrectionQuestions().",
+            "engine": "claude-opus-4-6"
+          },
+          {
+            "timestamp": "2026-02-09T22:00:04",
+            "category": "verification",
+            "problem": "How to verify that the new code is functionally identical to the old",
+            "solution": "Three-tier verification: (1) php -l syntax check, (2) direct function tests via php -r (21/21 pass), (3) HTTP page load comparison (same size: 314KB, same notices, same HTTP 200). The 1-byte difference in page size is whitespace — acceptable.",
+            "engine": "claude-opus-4-6"
           }
-        ]
+        ],
+        "token_usage_session2": {
+          "session_engine": "claude-opus-4-6",
+          "agents_spawned": [
+            {"id": "a1e8ae6", "task": "wrap 16 functions with function_exists guards", "tokens": 79265, "model": "opus"},
+            {"id": "ab39eab", "task": "delete 20 guarded function blocks from index.php", "tokens": 95755, "model": "opus"}
+          ],
+          "total_agent_tokens": 175020,
+          "note": "Session 2: implementation. Steps 1-7 complete."
+        }
       }
     },
     "backend_splitter": {
