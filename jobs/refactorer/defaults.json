@@ -1,0 +1,101 @@
+{
+  "project_id": "",
+  "created": "",
+  "description": "Monolith refactorer — phased decomposition of large codebases into modular architecture",
+  "agents": {
+    "auditor": {
+      "role": "Codebase Auditor",
+      "description": "Maps the entire codebase: file structure, function locations, data flow, anti-patterns, dependencies, traps. Produces the knowledge base all other agents depend on. Must run first.",
+      "config": {
+        "max_lessons": 200,
+        "phase": 0,
+        "depends_on": null,
+        "focus_areas": ["file_map", "function_index", "data_flow", "anti_patterns", "security", "external_deps"]
+      },
+      "experience": {
+        "run_count": 0,
+        "status": "pending",
+        "file_map": {},
+        "function_index": {},
+        "external_dependencies": [],
+        "db_tables": [],
+        "external_apis": [],
+        "lessons_learned": []
+      }
+    },
+    "db_architect": {
+      "role": "Database Layer Architect",
+      "description": "Creates unified DB abstraction, config/env system. Eliminates dual-implementation patterns and credential sprawl. Highest line-reduction-per-effort ratio.",
+      "config": {
+        "max_lessons": 100,
+        "phase": 1,
+        "depends_on": "auditor",
+        "recall_types": ["shadow_risk", "load_bearing_hack", "path_sensitivity", "duplication_pattern", "runtime_ddl", "security_positive"]
+      },
+      "experience": {
+        "run_count": 0,
+        "status": "pending",
+        "files_created": [],
+        "lines_removed": 0,
+        "lessons_learned": []
+      }
+    },
+    "backend_splitter": {
+      "role": "Backend Module Extractor",
+      "description": "Extracts backend functions from monolith into logical module files. Creates separate API/AJAX handler. Each extraction must leave the app functional.",
+      "config": {
+        "max_lessons": 100,
+        "phase": 2,
+        "depends_on": "db_architect",
+        "recall_types": ["shadow_risk", "load_bearing_hack", "data_flow"]
+      },
+      "experience": {
+        "run_count": 0,
+        "status": "pending",
+        "extraction_plan": {},
+        "files_created": [],
+        "lines_removed": 0,
+        "lessons_learned": []
+      }
+    },
+    "frontend_splitter": {
+      "role": "Frontend Extractor",
+      "description": "Extracts styles to external CSS, splits JS into logical modules. Resolves server-side-embedded-in-client patterns (PHP-in-JS, Jinja-in-JS, etc.).",
+      "config": {
+        "max_lessons": 100,
+        "phase": 3,
+        "depends_on": "backend_splitter",
+        "recall_types": ["data_flow", "duplication_bug", "duplication_pattern", "noise"]
+      },
+      "experience": {
+        "run_count": 0,
+        "status": "pending",
+        "extraction_plan": {},
+        "files_created": [],
+        "lines_removed": 0,
+        "lessons_learned": []
+      }
+    },
+    "cleanup": {
+      "role": "Cleanup Agent",
+      "description": "Removes dead code, backup files, excessive logging. Initializes git if needed. Verifies app works end-to-end after all phases.",
+      "config": {
+        "max_lessons": 50,
+        "phase": 4,
+        "depends_on": "frontend_splitter"
+      },
+      "experience": {
+        "run_count": 0,
+        "status": "pending",
+        "files_removed": [],
+        "lessons_learned": []
+      }
+    }
+  },
+  "universal_knowledge": {
+    "extraction_order": "DB abstraction first (highest duplication reduction), then backend modules, then frontend. Always test between steps.",
+    "data_flow_rule": "When server-side embeds data in client-side (PHP-in-JS, Jinja-in-JS), extract to data-attributes or global config objects BEFORE splitting JS into external files.",
+    "credential_rule": "All secrets via .env files. Never hardcode. Single canonical config location.",
+    "monolith_symptoms": "Single giant file, inline CSS/JS, duplicated helpers, output-buffering hacks for mixed AJAX+HTML, runtime DDL in business functions, same utility defined multiple times."
+  }
+}
