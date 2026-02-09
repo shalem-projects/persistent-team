@@ -306,6 +306,51 @@ agent_c_deposit.json  ──┘
 ```
 
 
+## Creation Agents vs Product Agents
+
+An important distinction in how jobs are categorized:
+
+**Creation agents** help you build and maintain a project:
+- AI session (architect, debugger, builder)
+- Code reviewer, test runner, doc writer
+- These live in the jobs library — reusable across any project
+
+**Product agents** ARE the project you're building:
+- A web scraper, a data pipeline, a chatbot
+- These are deployed in your project's `team.json` directly
+- They use the framework, but they're not part of the framework
+
+The jobs library ships only creation agents. Product agents are what you build *using* the framework.
+
+The test: **does this agent help CREATE a project, or is it a PRODUCT of a project?**
+
+
+## Attention Management: Sub-Workers Write Abstractions
+
+In a team with hierarchy, detailed lessons are noise for the roles above. A sub-worker should deposit **two levels** of information:
+
+1. **Detailed lessons** — for its own next incarnation (full context, specific files, exact errors)
+2. **A summary abstraction** — for the manager/architect role (compressed, decision-focused)
+
+```
+Builder deposits:
+  lessons_learned: [
+    { detailed lesson 1 },
+    { detailed lesson 2 },
+    ...10 more...
+    { category: "session_summary",
+      solution: "Refactored auth. 3 files. JWT over sessions. Redis for cache." }
+  ]
+
+Architect reads:
+  → only the session_summary lesson from builder
+  → saves attention for architectural decisions
+  → can drill into detailed lessons if needed
+```
+
+This is **attention management through hierarchy**. The worker knows what matters because it just did the work. It compresses its experience into what the roles above actually need. Raw details persist for when the same role re-incarnates.
+
+
 ## Design Decisions and Tradeoffs
 
 | Decision | Why | Tradeoff |

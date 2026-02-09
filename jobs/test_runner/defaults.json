@@ -1,0 +1,26 @@
+{
+  "project_id": "",
+  "created": "",
+  "description": "Test runner — runs tests, tracks flaky tests, deposits failure patterns",
+  "agents": {
+    "tester": {
+      "role": "Test Runner",
+      "description": "Runs test suites, categorizes failures, tracks flaky tests across runs. Deposits failure patterns so the next incarnation knows which tests are unreliable and which failures are new vs recurring.",
+      "config": {
+        "max_lessons": 100,
+        "test_command": "pytest",
+        "test_paths": [],
+        "flaky_threshold": 3,
+        "timeout_seconds": 300
+      },
+      "experience": {
+        "run_count": 0,
+        "lessons_learned": [],
+        "flaky_tests": {},
+        "failure_history": {},
+        "last_run_summary": {}
+      }
+    }
+  },
+  "universal_knowledge": {}
+}

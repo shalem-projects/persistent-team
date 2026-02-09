@@ -126,18 +126,28 @@ save_team(new_team, "new-project/team.json")
 # Config and universal knowledge preserved. Experience reset.
 ```
 
-## Jobs Library
+## Jobs: Creation Agents, Not Product Agents
 
-Reusable agent definitions with sensible defaults. Each job is a directory containing an agent class and a `defaults.json` you can deploy into any project.
+The jobs library contains **meta-agents** — agents that help you **create, build, and maintain** a project. They are not the product itself.
+
+A web scraper, a data pipeline, a chatbot — those are things you **build** using the framework. A code reviewer, a test runner, an AI architect — those are agents that help you **build better**. The jobs library is the second kind.
 
 | Job | Description |
 |-----|-------------|
 | [`ai_session`](jobs/ai_session/) | AI assistant as persistent agent — architect, debugger, builder roles |
-| [`web_scraper`](jobs/web_scraper/) | Fetch pages, extract links, learn dead URLs, track success rates |
-| [`file_scanner`](jobs/file_scanner/) | Scan directories, classify files, detect changes between runs |
-| [`log_analyzer`](jobs/log_analyzer/) | Parse logs, categorize errors, track frequency trends |
+| [`code_reviewer`](jobs/code_reviewer/) | Review changes for anti-patterns, regressions, style drift |
+| [`test_runner`](jobs/test_runner/) | Run tests, track flaky tests, detect new failures across runs |
+| [`doc_writer`](jobs/doc_writer/) | Track documentation coverage, find gaps, detect doc regressions |
 
 See [`jobs/README.md`](jobs/README.md) for how jobs work and how to add your own.
+
+## Attention Management: Sub-Workers Write Abstractions
+
+In a team, sub-workers deposit detailed lessons. But the project manager (or architect) doesn't need every detail — it needs a summary. A sub-worker can write an **abstraction** of its work: a compressed summary that saves attention for the roles above it.
+
+The builder deposits 10 detailed lessons about files it changed. It also deposits a one-line summary: *"Refactored auth module. 3 files. Key decision: JWT over sessions."* The architect reads only the summary. The raw lessons are still there for when the builder re-incarnates and needs the details.
+
+This is **attention management through hierarchy** — the worker knows what's important because it just did the work.
 
 ## Architecture
 

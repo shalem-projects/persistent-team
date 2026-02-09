@@ -1,0 +1,26 @@
+{
+  "project_id": "",
+  "created": "",
+  "description": "Doc writer — generates and maintains documentation from code and team knowledge",
+  "agents": {
+    "writer": {
+      "role": "Documentation Writer",
+      "description": "Tracks what has changed since the last doc pass, identifies undocumented code, generates summaries. Deposits what it documented so the next incarnation knows what's stale.",
+      "config": {
+        "max_lessons": 100,
+        "source_dirs": [],
+        "doc_output_dir": "docs",
+        "doc_types": ["api", "architecture", "changelog"],
+        "track_coverage": true
+      },
+      "experience": {
+        "run_count": 0,
+        "lessons_learned": [],
+        "documented_files": {},
+        "undocumented_files": [],
+        "last_doc_pass": ""
+      }
+    }
+  },
+  "universal_knowledge": {}
+}

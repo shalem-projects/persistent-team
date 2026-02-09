@@ -2,6 +2,16 @@
 
 A **job** is a reusable agent definition: a Python class + a `defaults.json` that you can deploy into any project's `team.json`.
 
+## Creation Agents, Not Product Agents
+
+Jobs are **meta-agents** — they help you **create, build, and maintain** a project. They are not the product itself.
+
+The distinction matters:
+- **Creation agent**: helps you build software (code reviewer, test runner, AI architect)
+- **Product agent**: IS the software you're building (web scraper, chatbot, data pipeline)
+
+Product agents are what you build *using* the framework. You deploy them in your project's `team.json` directly. Creation agents live here in the jobs library — reusable across any project.
+
 ## Structure
 
 Each job is a directory:
@@ -28,7 +38,7 @@ from agent_framework import load_team, save_team
 team = load_team("team.json")
 
 # Load the job defaults
-with open("jobs/web_scraper/defaults.json") as f:
+with open("jobs/code_reviewer/defaults.json") as f:
     defaults = json.load(f)
 
 # Merge agents and universal knowledge
@@ -39,22 +49,22 @@ for key, value in defaults.get("universal_knowledge", {}).items():
 save_team(team)
 ```
 
-2. Customize the config for your project (URLs, paths, patterns, etc.)
+2. Customize the config for your project (paths, patterns, rules, etc.)
 
 3. Import and use the agent class:
 
 ```python
-from jobs.web_scraper.agent import ScraperAgent
+from jobs.code_reviewer.agent import CodeReviewerAgent
 
-agent = ScraperAgent("scraper", team)
-results = agent.run()
+agent = CodeReviewerAgent("reviewer", team)
+findings = agent.run(changed_files=["src/auth.py"])
 ```
 
 ## Available Jobs
 
 ### `ai_session` — AI Assistant as Persistent Agent
 
-The meta-job. Your AI coding assistant (Claude, GPT, any LLM) treated as an ephemeral agent. Ships with three roles:
+The core meta-job. Your AI coding assistant (Claude, GPT, any LLM) treated as an ephemeral agent. Ships with three roles:
 
 - **architect** — plans, designs, restructures
 - **debugger** — investigates, traces, fixes
@@ -84,19 +94,21 @@ agent.deposit_session(
 )
 ```
 
-### `web_scraper` — Fetch Pages, Extract Links
+### `code_reviewer` — Review Changes for Patterns and Regressions
 
-Fetches web pages, extracts links, learns which URLs are dead, tracks success rates across runs.
+Reviews code against configured anti-patterns and style rules. Learns which patterns recur across reviews, tracks regressions, deposits findings so the next review is smarter.
 
-### `file_scanner` — Scan Directories, Classify Files
+### `test_runner` — Run Tests, Track Flaky Tests
 
-Scans directories for files matching patterns, classifies them by type (code, data, docs, config), detects new/changed/deleted files between runs.
+Runs test suites, parses results, tracks which tests are flaky (pass/fail inconsistently across runs). Detects new failures vs recurring ones. Deposits failure patterns for the next incarnation.
 
-### `log_analyzer` — Parse Logs, Track Error Trends
+### `doc_writer` — Track Documentation Coverage
 
-Parses log files, categorizes errors by severity and pattern, tracks frequency trends across runs to detect emerging issues.
+Scans source code for documentation gaps. Detects files that lost documentation (doc regressions) and files that are chronically undocumented across runs.
 
 ## How to Add a New Job
+
+Before adding a job, ask: **does this help CREATE a project, or is it a PRODUCT of a project?** Only creation agents belong here.
 
 1. Create a directory under `jobs/`:
 

@@ -1,0 +1,25 @@
+{
+  "project_id": "",
+  "created": "",
+  "description": "Code reviewer — checks changes for patterns, regressions, and style consistency",
+  "agents": {
+    "reviewer": {
+      "role": "Code Reviewer",
+      "description": "Reviews code changes against known patterns and past lessons. Catches regressions, style drift, and anti-patterns. Deposits what it found so the next review is smarter.",
+      "config": {
+        "max_lessons": 100,
+        "watched_patterns": [],
+        "anti_patterns": [],
+        "style_rules": [],
+        "severity_levels": ["critical", "warning", "suggestion"]
+      },
+      "experience": {
+        "run_count": 0,
+        "lessons_learned": [],
+        "patterns_seen": {},
+        "regressions_caught": 0
+      }
+    }
+  },
+  "universal_knowledge": {}
+}
