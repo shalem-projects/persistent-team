@@ -502,11 +502,76 @@
         ]
       },
       "experience": {
-        "run_count": 0,
-        "status": "pending",
+        "run_count": 1,
+        "last_run": "2026-02-09",
+        "status": "planned",
+        "plan_file": ".claude/plans/expressive-coalescing-boole.md",
         "files_created": [],
         "lines_removed": 0,
-        "findings": []
+        "actual_function_count": 23,
+        "note": "Auditor found 19 DB functions, planning found 4 more: getAllSearchQueries (5637), getCorrectionByQuestion (5879), buildQueryGradeMapping (5700), update_correction_questions inline AJAX handler (1884-2051)",
+        "architecture_decisions": {
+          "pdo_everywhere": "Yes. connect.php (mysqli) only serves external lessons table — NOT used by any ai_* functions. Safe to use PDO for everything.",
+          "single_class": "Not strategy pattern. Dialect differences are DDL-only. Single Database class with internal branching at ensureTables() only.",
+          "ddl_centralized": "All CREATE TABLE moved to Database::ensureTables(), called once per request. Removes runtime DDL from 8+ functions.",
+          "credentials": ".env file replaces 5-path connect.php search. env_loader.php reads it.",
+          "migration": "Incremental: require db_functions.php before index.php defs, function_exists() guards, delete old one-by-one."
+        },
+        "risk_assessment": {
+          "highest": "storeAiCorrection (5411-5634) — complex # split + upsert + sub-question scan. Migrate LAST.",
+          "medium": "helpers.php shadow — db_functions.php must load BEFORE helpers.php at line 175",
+          "low": "ob_start() at line 4 — don't touch"
+        },
+        "token_usage": {
+          "session_engine": "claude-opus-4-6",
+          "agents_spawned": [
+            {"id": "a0c4ae5", "task": "create env_setup job files", "tokens": 18082, "model": "sonnet"},
+            {"id": "a105049", "task": "analyze helpers.php dependencies", "tokens": 28559, "model": "haiku"},
+            {"id": "a9c2195", "task": "deep explore all 19 DB functions", "tokens": 44287, "model": "opus"},
+            {"id": "a1e78ba", "task": "design Database abstraction plan", "tokens": 89427, "model": "opus"}
+          ],
+          "total_agent_tokens": 180355,
+          "note": "Main session tokens not tracked (no API for self-measurement). Agent tokens from tool results."
+        },
+        "findings": [
+          {
+            "timestamp": "2026-02-09T18:30:00",
+            "category": "discovery",
+            "problem": "Auditor counted 19 DB functions but actual count is 23. 4 were missed.",
+            "solution": "Additional functions: getAllSearchQueries(5637), getCorrectionByQuestion(5879), buildQueryGradeMapping(5700), inline update_correction_questions handler(1884-2051). All must be migrated.",
+            "engine": "claude-opus-4-6"
+          },
+          {
+            "timestamp": "2026-02-09T18:30:01",
+            "category": "architecture_insight",
+            "problem": "connect.php creates $connection (mysqli) but it's NOT used by any ai_* functions",
+            "solution": "The mysqli from connect.php only serves get_group_lessons AJAX (lines 113-170, 2190-2248) for the external lessons table. All ai_* functions go through getMysqlCorrectionsConnection() which creates its OWN connection. PDO can fully replace this without touching connect.php.",
+            "context": "This means PDO-everywhere is safe — no conflict with existing $connection",
+            "engine": "claude-opus-4-6"
+          },
+          {
+            "timestamp": "2026-02-09T18:30:02",
+            "category": "architecture_insight",
+            "problem": "MySQL vs SQLite differences are minimal when using PDO",
+            "solution": "Only 3 real differences: (1) AUTO_INCREMENT vs AUTOINCREMENT in DDL, (2) NOW() vs date() for timestamps — solved by always passing $db->now(), (3) ON UPDATE CURRENT_TIMESTAMP (MySQL-only for updated_at). All handled in ensureTables() and now() method.",
+            "engine": "claude-opus-4-6"
+          },
+          {
+            "timestamp": "2026-02-09T18:30:03",
+            "category": "migration_strategy",
+            "problem": "Cannot change all 23 functions at once in a live production site",
+            "solution": "7-step incremental plan: (1) create infrastructure files, (2) create db_functions.php, (3) wire via require_once + function_exists guards, (4) extract inline AJAX handler, (5) delete old functions, (6) update setup_databases.php, (7) record in persistent-team. Test after each step.",
+            "engine": "claude-opus-4-6"
+          },
+          {
+            "timestamp": "2026-02-09T18:30:04",
+            "category": "risk_assessment",
+            "problem": "storeAiCorrection is the most complex DB function (223 lines, # split, upsert, sub-question scan)",
+            "solution": "Migrate this function LAST. It has the most logic and the most potential for regression. All simpler functions should be verified working before tackling this one.",
+            "context": "index.php:5411-5634",
+            "engine": "claude-opus-4-6"
+          }
+        ]
       }
     },
     "backend_splitter": {
