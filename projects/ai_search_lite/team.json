@@ -537,9 +537,10 @@
           "migration": "Incremental: require db_functions.php before index.php defs, function_exists() guards, delete old one-by-one."
         },
         "risk_assessment": {
-          "highest": "storeAiCorrection (5411-5634) — complex # split + upsert + sub-question scan. Migrate LAST.",
-          "medium": "helpers.php shadow — db_functions.php must load BEFORE helpers.php at line 175",
-          "low": "ob_start() at line 4 — don't touch"
+          "highest": "storeAiCorrection — RESOLVED: converted cleanly, risk was in duplication not logic",
+          "medium": "helpers.php shadow — RESOLVED: db_functions.php loads AFTER helpers.php, runtime resolution is safe",
+          "low": "ob_start() at line 4 — untouched, still load-bearing",
+          "discovered": "POST handler chain nesting (lines 1580 vs 1882) — pre-existing routing bug, deferred to Phase 2"
         },
         "token_usage": {
           "session_engine": "claude-opus-4-6",
@@ -647,6 +648,43 @@
             "category": "verification",
             "problem": "How to verify that the new code is functionally identical to the old",
             "solution": "Three-tier verification: (1) php -l syntax check, (2) direct function tests via php -r (21/21 pass), (3) HTTP page load comparison (same size: 314KB, same notices, same HTTP 200). The 1-byte difference in page size is whitespace — acceptable.",
+            "engine": "claude-opus-4-6"
+          },
+          {
+            "timestamp": "2026-02-09T22:30:00",
+            "category": "risk_outcome",
+            "problem": "storeAiCorrection was flagged as highest risk but converted cleanly",
+            "solution": "The complexity was in the DUPLICATION (223 lines of MySQL+SQLite paths), not in the LOGIC. With single PDO path, the same upsert-with-#-split logic reduced to ~50 lines. Risk assessment should weight duplication-complexity separately from logic-complexity.",
+            "engine": "claude-opus-4-6"
+          },
+          {
+            "timestamp": "2026-02-09T22:30:01",
+            "category": "architecture_insight",
+            "problem": "ai_feedback is a 6th table not in setup_databases.php's original 5 tables",
+            "solution": "getFeedbackDb() created ai_feedback inline via SQLite DDL. Now included in Database::ensureTables() for both MySQL and SQLite. setup_databases.php previously missed this table entirely — the new unified approach caught this gap.",
+            "context": "setup_databases.php only knew about 5 tables. The 6th (ai_feedback) was silently created by getFeedbackDb(). This is the kind of thing centralized DDL catches.",
+            "engine": "claude-opus-4-6"
+          },
+          {
+            "timestamp": "2026-02-09T22:30:02",
+            "category": "architecture_insight",
+            "problem": "Include ordering: db_functions.php depends on functions defined later in index.php",
+            "solution": "Safe because PHP function calls resolve at RUNTIME not PARSE time. db_functions.php loads at line 176, defines fetchAiCorrections() which calls collectAppIdentifiers() and normalizeKeyword(). Those are defined later in index.php (~line 4000+). Works because fetchAiCorrections() is never CALLED at include time — only when an AJAX request triggers it.",
+            "context": "This is fundamental PHP: function definitions are hoisted within a file, and cross-file references resolve at call time. Safe for all future extraction phases too.",
+            "engine": "claude-opus-4-6"
+          },
+          {
+            "timestamp": "2026-02-09T22:30:03",
+            "category": "codebase_map_update",
+            "problem": "Phase 1 changed the file structure — auditor map needs updating",
+            "solution": "New file map after Phase 1: index.php (15,409 lines), includes/Database.php (290), includes/db_functions.php (645), config/env_loader.php (49), config/.env, config/.env.example, setup_databases.php (36). The require chain is: index.php -> helpers.php -> db_functions.php -> Database.php -> env_loader.php.",
+            "engine": "claude-opus-4-6"
+          },
+          {
+            "timestamp": "2026-02-09T22:30:04",
+            "category": "production_deployment_note",
+            "problem": "What needs to happen for production deployment of Phase 1",
+            "solution": "Upload 5 files: includes/Database.php, includes/db_functions.php, config/env_loader.php, config/.env (with real MySQL creds), setup_databases.php. Upload modified index.php. The .env on production MUST have DB_HOST, DB_NAME, DB_USER, DB_PASS filled in. OPENAI_API_KEY too if AI features are wanted. Test with a single AJAX action before full switchover.",
             "engine": "claude-opus-4-6"
           }
         ],
