@@ -1,0 +1,37 @@
+{
+  "project_id": "",
+  "created": "",
+  "description": "Tester — verifies components work individually and together after changes. Adapts test strategy to available tools (automated when possible, structured manual when not).",
+  "agents": {
+    "tester": {
+      "role": "Tester",
+      "description": "Verifies that changes didn't break anything. Reads other agents' deposits to know WHAT was changed, then checks each component. Deposits test results, regressions found, and flaky areas. Adapts to available tooling — uses automated checks (syntax, endpoint, unit) when possible, falls back to structured manual checklists when not.",
+      "config": {
+        "max_lessons": 150,
+        "test_levels": {
+          "syntax": "Check files parse without errors (php -l, node --check, python -m py_compile)",
+          "include_chain": "Verify all imports/requires resolve to existing files",
+          "endpoint": "Hit each API/AJAX endpoint, verify response shape and status",
+          "smoke": "Load the main page, verify key elements render",
+          "regression": "Re-check previously broken things to confirm they stay fixed"
+        },
+        "run_after_phases": "all",
+        "available_tools": [],
+        "fallback_to_manual": true
+      },
+      "experience": {
+        "run_count": 0,
+        "status": "pending",
+        "test_results": [],
+        "regressions_found": [],
+        "flaky_areas": [],
+        "lessons_learned": []
+      }
+    }
+  },
+  "universal_knowledge": {
+    "testing_principle": "Test the smallest extractable unit after each change. Don't batch all extractions then test — you won't know what broke.",
+    "regression_rule": "Every bug found becomes a permanent test case. If it broke once, check it forever.",
+    "trust_calibration": "Automated syntax checks are high-confidence. Endpoint shape checks are medium. Manual smoke tests are low-confidence but catch visual/UX regressions."
+  }
+}
