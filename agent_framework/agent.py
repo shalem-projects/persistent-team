@@ -29,9 +29,10 @@ class Agent:
     Subclasses override run() and _apply_experience().
     """
 
-    def __init__(self, name, team):
+    def __init__(self, name, team, engine=None):
         self.name = name
         self.team = team
+        self.engine = engine  # e.g. "claude-opus-4-6", "claude-sonnet-4-5", "gpt-4o"
         self.state = team["agents"][name]
         self.role = self.state["role"]
         self.config = self.state["config"]
@@ -54,7 +55,7 @@ class Agent:
             return [l for l in lessons if l.get("category") == category]
         return lessons
 
-    def learn(self, category, problem, solution, context=None):
+    def learn(self, category, problem, solution, context=None, engine=None):
         """
         Record a lesson learned during this run. This is how the agent
         builds knowledge for its next incarnation.
@@ -66,6 +67,10 @@ class Agent:
             problem: what went wrong or what was unexpected
             solution: what worked, or what should be tried next time
             context: optional extra data (URL, text sample, error message)
+            engine: override engine for this specific lesson (defaults to
+                    self.engine set at init). Records which AI model or
+                    tool produced this knowledge — helps next incarnation
+                    calibrate trust (e.g. Opus architecture vs Haiku lint).
         """
         lesson = {
             "timestamp": datetime.now().isoformat(),
@@ -75,6 +80,10 @@ class Agent:
         }
         if context is not None:
             lesson["context"] = context
+        # Record which engine produced this lesson
+        effective_engine = engine or self.engine
+        if effective_engine:
+            lesson["engine"] = effective_engine
         self._run_lessons.append(lesson)
 
     def log(self, msg, indent=1):
