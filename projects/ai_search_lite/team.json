@@ -3,7 +3,7 @@
   "created": "2026-02-09",
   "description": "Refactoring ai-search-lite: 17K-line PHP monolith → modular architecture. AI-powered educational resource recommender for Hebrew math teachers.",
   "source_path": "C:\\Users\\User\\Desktop\\ai-search-lite_8",
-  "stack": "PHP 7.4+, MySQL/SQLite, OpenAI GPT-4o, vanilla JS",
+  "stack": "PHP 7.2, MySQL/SQLite, OpenAI GPT-4o, vanilla JS",
   "production_url": "https://www.yisumatica.org.il/",
   "constraint": "Live in production. Must remain functional after every change.",
   "template_used": "jobs/refactorer",
@@ -12,7 +12,7 @@
       "role": "Codebase Auditor",
       "description": "Maps the entire codebase: file structure, function locations, data flow, anti-patterns, traps.",
       "config": {
-        "max_lessons": 200,
+        "max_findings": 200,
         "phase": 0,
         "depends_on": null,
         "source_file": "index.php",
@@ -363,7 +363,7 @@
           "POST yisumaticaApi/getUserLessons.php",
           "POST api.openai.com/v1/chat/completions"
         ],
-        "lessons_learned": [
+        "findings": [
           {
             "timestamp": "2026-02-09T10:00:00",
             "category": "shadow_risk",
@@ -467,7 +467,7 @@
       "role": "Database Layer Architect",
       "description": "Creates unified Database class wrapping MySQL+SQLite. Creates .env config. Eliminates all dual-implementation DB functions.",
       "config": {
-        "max_lessons": 100,
+        "max_findings": 100,
         "phase": 1,
         "depends_on": "auditor",
         "target_files": [
@@ -490,14 +490,14 @@
         "status": "pending",
         "files_created": [],
         "lines_removed": 0,
-        "lessons_learned": []
+        "findings": []
       }
     },
     "backend_splitter": {
       "role": "PHP Module Extractor",
       "description": "Extracts PHP functions from index.php into includes/. Creates separate AJAX handler.",
       "config": {
-        "max_lessons": 100,
+        "max_findings": 100,
         "phase": 2,
         "depends_on": "db_architect",
         "extraction_plan": {
@@ -542,14 +542,14 @@
         "status": "pending",
         "files_created": [],
         "lines_removed": 0,
-        "lessons_learned": []
+        "findings": []
       }
     },
     "frontend_splitter": {
       "role": "CSS and JavaScript Extractor",
       "description": "Extracts CSS to stylesheet. Splits ~7500 lines of JS into modules.",
       "config": {
-        "max_lessons": 100,
+        "max_findings": 100,
         "phase": 3,
         "depends_on": "backend_splitter",
         "extraction_plan": {
@@ -599,14 +599,14 @@
         "status": "pending",
         "files_created": [],
         "lines_removed": 0,
-        "lessons_learned": []
+        "findings": []
       }
     },
     "cleanup": {
       "role": "Final Cleanup",
       "description": "Removes dead code, backup files, excessive logging. Initializes git. Verifies app.",
       "config": {
-        "max_lessons": 50,
+        "max_findings": 50,
         "phase": 4,
         "depends_on": "frontend_splitter",
         "targets": [
@@ -621,14 +621,14 @@
         "run_count": 0,
         "status": "pending",
         "files_removed": [],
-        "lessons_learned": []
+        "findings": []
       }
     },
     "tester": {
       "role": "Tester",
       "description": "Verifies components work after each phase. Reads other agents' deposits to know what changed. Runs syntax checks, include chain verification, endpoint checks, and smoke test checklists. Tracks regressions across phases.",
       "config": {
-        "max_lessons": 150,
+        "max_findings": 150,
         "run_after_phases": [
           "db_architect",
           "backend_splitter",
@@ -670,7 +670,108 @@
         "test_results": [],
         "regressions_found": [],
         "flaky_areas": [],
-        "lessons_learned": []
+        "findings": []
+      }
+    }
+  },
+    "env_setup": {
+      "role": "Environment Setup",
+      "description": "Installs and configures local dev tools to match production. Tracks attempts, failures, and alternatives. Production runs PHP 7.2 — must match.",
+      "config": {
+        "max_lessons": 200,
+        "production_php_version": "7.2",
+        "production_server": "Apache (shared hosting)",
+        "machine": "Windows 10 x64 (19045.6466)",
+        "available_package_managers": ["chocolatey_2.4.3", "winget_1.12.460"],
+        "unavailable_package_managers": ["scoop"],
+        "constraint": "MUST install PHP 7.x to match production. PHP 8.x has breaking changes (removed functions, changed behavior)."
+      },
+      "experience": {
+        "run_count": 1,
+        "last_run": "2026-02-09",
+        "status": "in_progress",
+        "installations": [
+          {
+            "tool": "php",
+            "target_version": "7.4.33",
+            "method": "curl from windows.php.net",
+            "success": false,
+            "duration_s": 420,
+            "notes": "Direct download from windows.php.net/releases/php-7.4.33-nts-Win32-vc15-x64.zip. Extremely slow: ~3-10KB/s. Got to ~10MB of 24.9MB then timed out (exit code 56). Server throttles downloads heavily.",
+            "timestamp": "2026-02-09T16:02:00",
+            "engine": "claude-opus-4-6"
+          },
+          {
+            "tool": "php",
+            "target_version": "7.4.33",
+            "method": "chocolatey",
+            "success": false,
+            "notes": "choco install php --version=7.4.33 failed. Two issues: (1) non-admin install requires different location, (2) stale lock file at C:\\ProgramData\\chocolatey\\lib\\f0d6f1557051... from previous crashed NuGet process. Need admin rights or remove lock file.",
+            "timestamp": "2026-02-09T16:15:00",
+            "engine": "claude-opus-4-6"
+          },
+          {
+            "tool": "php",
+            "target_version": "7.x",
+            "method": "winget search",
+            "success": false,
+            "notes": "winget has NO PHP 7.x packages. Oldest available: PHP 8.1. winget cannot solve the PHP 7 requirement.",
+            "timestamp": "2026-02-09T16:20:00",
+            "engine": "claude-opus-4-6"
+          },
+          {
+            "tool": "php",
+            "target_version": "8.1.34",
+            "method": "winget",
+            "success": true,
+            "notes": "WRONG VERSION INSTALLED. winget install PHP.PHP.NTS.8.1 succeeded (29.3MB, fast download). But production runs PHP 7.2 — PHP 8.1 has breaking changes. This was a mistake: should have respected the version constraint before installing.",
+            "timestamp": "2026-02-09T16:22:00",
+            "engine": "claude-opus-4-6",
+            "error_type": "version_mismatch",
+            "lesson": "Always check production version constraint BEFORE falling back to different version. The agent ignored the user-stated PHP 7.2 requirement."
+          }
+        ],
+        "findings": [
+          {
+            "timestamp": "2026-02-09T16:25:00",
+            "category": "install_failure",
+            "problem": "windows.php.net throttles downloads to ~3-10KB/s from this machine",
+            "solution": "Use a mirror, package manager, or XAMPP bundle instead of direct download",
+            "context": "24.9MB file took 7+ minutes to reach 10MB before timing out",
+            "engine": "claude-opus-4-6"
+          },
+          {
+            "timestamp": "2026-02-09T16:25:01",
+            "category": "install_failure",
+            "problem": "Chocolatey requires admin privileges on this machine. Lock file from previous crash blocks install.",
+            "solution": "Either run as admin, or remove stale lock file at C:\\ProgramData\\chocolatey\\lib\\f0d6f1557051..., or use different package manager",
+            "context": "choco v2.4.3 installed but running as non-admin user",
+            "engine": "claude-opus-4-6"
+          },
+          {
+            "timestamp": "2026-02-09T16:25:02",
+            "category": "version_constraint",
+            "problem": "Production runs PHP 7.2. No package manager (winget, choco, scoop) has PHP 7.x for Windows. Only PHP 8.1+ available.",
+            "solution": "For PHP 7.x on Windows: (1) XAMPP with PHP 7.x bundle, (2) manual download from windows.php.net/downloads/releases/archives/, (3) use the partial download already at C:\\php\\ (10MB of 24.9MB)",
+            "context": "User explicitly stated: 'the site is running on php 7.2 i think'",
+            "engine": "claude-opus-4-6"
+          },
+          {
+            "timestamp": "2026-02-09T16:25:03",
+            "category": "agent_mistake",
+            "problem": "Agent installed PHP 8.1 despite knowing production runs PHP 7.2. Prioritized speed over correctness.",
+            "solution": "ALWAYS check version constraint before installing. If the correct version is unavailable via fast methods, document the gap and ask user — do NOT silently substitute.",
+            "context": "PHP 7.2->8.1 breaks: each() removed, create_function() removed, string functions changed, type coercion stricter",
+            "engine": "claude-opus-4-6"
+          },
+          {
+            "timestamp": "2026-02-09T16:25:04",
+            "category": "alternative_method",
+            "problem": "Need PHP 7.x on Windows without admin and with slow windows.php.net",
+            "solution": "Next attempts should try: (1) resume partial curl download with -C flag, (2) XAMPP portable 7.x, (3) download from museum.php.net or archive mirror, (4) ask user if they have PHP installer already",
+            "engine": "claude-opus-4-6"
+          }
+        ]
       }
     }
   },
@@ -678,6 +779,8 @@
     "monolith_structure": "17,138-line index.php: PHP backend (1-8280), HTML (8282-9600), JS (9600-17138)",
     "data_flow": "PHP -> HTML data-attributes -> JS. Debug at PHP source.",
     "credential_status": "Already clean. No hardcoded secrets. Externalized to config.php/connect.php.",
-    "hebrew_codebase": "RTL layout, Hebrew keyword normalization, Google Fonts Assistant"
+    "hebrew_codebase": "RTL layout, Hebrew keyword normalization, Google Fonts Assistant",
+    "production_php_version": "7.2 (user confirmed). Must match locally.",
+    "local_machine": "Windows 10 x64, choco 2.4.3 (needs admin), winget 1.12.460, no scoop, Python 3.13.2 available"
   }
 }
