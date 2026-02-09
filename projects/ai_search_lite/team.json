@@ -7,7 +7,6 @@
   "production_url": "https://www.yisumatica.org.il/",
   "constraint": "Live in production. Must remain functional after every change.",
   "template_used": "jobs/refactorer",
-
   "agents": {
     "auditor": {
       "role": "Codebase Auditor",
@@ -24,105 +23,337 @@
         "last_run": "2026-02-09",
         "status": "complete",
         "completed_at": "2026-02-09T10:00:00",
-
         "file_map": {
           "index.php": {
             "lines": 17138,
             "content": "ALL backend PHP + HTML + CSS + JS in one file",
             "sections": {
-              "early_ajax_handler": [1, 173],
-              "php_db_functions": [174, 761],
-              "php_config_topics": [762, 830],
-              "php_sorting": [831, 900],
-              "php_keyword_matching": [2703, 2860],
-              "php_data_loaders": [2880, 3170],
-              "php_scoring_grading": [3170, 3700],
-              "php_openai_topic_detect": [3701, 3830],
-              "php_image_url_builder": [3931, 4246],
-              "php_ai_recommendation_core": [4247, 5104],
-              "php_openai_wrapper": [5105, 5244],
-              "php_caching_corrections": [5245, 6126],
-              "php_overrides": [6127, 6345],
-              "php_url_builders": [6346, 6659],
-              "php_ai_selection": [6660, 8280],
-              "html_template": [8282, 9600],
-              "js_logging_version": [9600, 9890],
-              "js_category_toggle": [9890, 10100],
-              "js_user_lessons": [10100, 10800],
-              "js_group_lessons": [10800, 11200],
-              "js_php_embedded_cards": [11200, 12700],
-              "js_utils_icons": [12700, 13100],
-              "js_auth_schools": [13100, 13400],
-              "js_student_link": [13400, 13600],
-              "js_student_link_ui": [13600, 14100],
-              "js_card_builder": [14100, 15200],
-              "js_modals_handlers": [15200, 15700],
-              "js_search_tags_requests": [15700, 16600],
-              "js_autocomplete": [16600, 17138]
+              "early_ajax_handler": [
+                1,
+                173
+              ],
+              "php_db_functions": [
+                174,
+                761
+              ],
+              "php_config_topics": [
+                762,
+                830
+              ],
+              "php_sorting": [
+                831,
+                900
+              ],
+              "php_keyword_matching": [
+                2703,
+                2860
+              ],
+              "php_data_loaders": [
+                2880,
+                3170
+              ],
+              "php_scoring_grading": [
+                3170,
+                3700
+              ],
+              "php_openai_topic_detect": [
+                3701,
+                3830
+              ],
+              "php_image_url_builder": [
+                3931,
+                4246
+              ],
+              "php_ai_recommendation_core": [
+                4247,
+                5104
+              ],
+              "php_openai_wrapper": [
+                5105,
+                5244
+              ],
+              "php_caching_corrections": [
+                5245,
+                6126
+              ],
+              "php_overrides": [
+                6127,
+                6345
+              ],
+              "php_url_builders": [
+                6346,
+                6659
+              ],
+              "php_ai_selection": [
+                6660,
+                8280
+              ],
+              "html_template": [
+                8282,
+                9600
+              ],
+              "js_logging_version": [
+                9600,
+                9890
+              ],
+              "js_category_toggle": [
+                9890,
+                10100
+              ],
+              "js_user_lessons": [
+                10100,
+                10800
+              ],
+              "js_group_lessons": [
+                10800,
+                11200
+              ],
+              "js_php_embedded_cards": [
+                11200,
+                12700
+              ],
+              "js_utils_icons": [
+                12700,
+                13100
+              ],
+              "js_auth_schools": [
+                13100,
+                13400
+              ],
+              "js_student_link": [
+                13400,
+                13600
+              ],
+              "js_student_link_ui": [
+                13600,
+                14100
+              ],
+              "js_card_builder": [
+                14100,
+                15200
+              ],
+              "js_modals_handlers": [
+                15200,
+                15700
+              ],
+              "js_search_tags_requests": [
+                15700,
+                16600
+              ],
+              "js_autocomplete": [
+                16600,
+                17138
+              ]
             }
           },
-          "setup_databases.php": {"lines": 266, "purpose": "table creation utility"},
-          "view_lesson_entries.php": {"lines": 380, "purpose": "lesson analytics viewer"},
-          "gpt_api_example.php": {"lines": 234, "purpose": "standalone OpenAI examples"},
-          "extractor.py": {"lines": 180, "purpose": "Python data extraction"},
-          "worksheets.json": {"purpose": "worksheet catalog, ~20KB"}
+          "setup_databases.php": {
+            "lines": 266,
+            "purpose": "table creation utility"
+          },
+          "view_lesson_entries.php": {
+            "lines": 380,
+            "purpose": "lesson analytics viewer"
+          },
+          "gpt_api_example.php": {
+            "lines": 234,
+            "purpose": "standalone OpenAI examples"
+          },
+          "extractor.py": {
+            "lines": 180,
+            "purpose": "Python data extraction"
+          },
+          "worksheets.json": {
+            "purpose": "worksheet catalog, ~20KB"
+          }
         },
-
         "external_dependencies": [
-          {"file": "config.php", "note": "DB config constants, NOT in repo, in parent dirs"},
-          {"file": "connect.php", "note": "Creates $connection (mysqli), searched in 5 paths at lines 246-252"},
-          {"file": "helpers.php", "note": "Shared functions. SHADOW RISK: defines submitTeacherRequest, index.php also defines it at line 498"}
+          {
+            "file": "config.php",
+            "note": "DB config constants, NOT in repo, in parent dirs"
+          },
+          {
+            "file": "connect.php",
+            "note": "Creates $connection (mysqli), searched in 5 paths at lines 246-252"
+          },
+          {
+            "file": "helpers.php",
+            "note": "Shared functions. SHADOW RISK: defines submitTeacherRequest, index.php also defines it at line 498"
+          }
         ],
-
         "function_index": {
-          "getMysqlCorrectionsConnection": {"line": 236, "category": "db"},
-          "getFeedbackDb": {"line": 208, "category": "db"},
-          "storeFeedbackSuggestion": {"line": 222, "category": "db"},
-          "storeTeacherMessage": {"line": 279, "category": "db"},
-          "getTeacherConversation": {"line": 315, "category": "db"},
-          "trackTopicSearch": {"line": 364, "category": "tracking"},
-          "trackAppOpen": {"line": 427, "category": "tracking"},
-          "submitTeacherRequest": {"line": 498, "category": "requests"},
-          "supportTeacherRequest": {"line": 562, "category": "requests"},
-          "getTeacherRequests": {"line": 676, "category": "requests"},
-          "sortCatalogEntries": {"line": 831, "category": "recommendations"},
-          "normalizeKeyword": {"line": 2703, "category": "recommendations"},
-          "extractAndNormalizeKeywords": {"line": 2762, "category": "recommendations"},
-          "doesItemContainKeyword": {"line": 2807, "category": "recommendations"},
-          "detectStrongKeyword": {"line": 2859, "category": "recommendations"},
-          "loadYisumaticaApps": {"line": 2880, "category": "data_loaders"},
-          "loadYisumaticaLessons": {"line": 2949, "category": "data_loaders"},
-          "loadKehilaLessons": {"line": 3002, "category": "data_loaders"},
-          "loadWorksheetCatalog": {"line": 3061, "category": "data_loaders"},
-          "loadTotalLikes": {"line": 3134, "category": "data_loaders"},
-          "loadYisumaticaPuzzles": {"line": 3170, "category": "data_loaders"},
-          "buildAppImageUrl": {"line": 3931, "category": "url_builders"},
-          "getAppIdentifier": {"line": 4247, "category": "url_builders"},
-          "buildStructuredAppSummaries": {"line": 4299, "category": "openai"},
-          "buildLessonSuggestionSummary": {"line": 4330, "category": "openai"},
-          "callOpenAIChatCompletion": {"line": 5105, "category": "openai"},
-          "trackTokenUsage": {"line": 5138, "category": "openai"},
-          "findCachedResponse": {"line": 5245, "category": "corrections"},
-          "ensureAiCorrectionsColumns": {"line": 5373, "category": "corrections"},
-          "storeAiCorrection": {"line": 5411, "category": "corrections"},
-          "fetchAiCorrections": {"line": 5937, "category": "corrections"},
-          "fetchRecommendationOverrides": {"line": 6127, "category": "corrections"},
-          "applyRecommendationOverrides": {"line": 6232, "category": "corrections"},
-          "storeRecommendationOverride": {"line": 6272, "category": "corrections"},
-          "buildYoutubeUrl": {"line": 6346, "category": "url_builders"},
-          "buildPuzzleSiteUrl": {"line": 6377, "category": "url_builders"},
-          "buildPuzzleContentUrl": {"line": 6399, "category": "url_builders"},
-          "buildAppUrl": {"line": 6433, "category": "url_builders"},
-          "mapSourceMetaFromItem": {"line": 3259, "category": "url_builders"},
-          "callOpenAIForSelection": {"line": 6660, "category": "openai"},
-          "extractTextFromResponse": {"line": 8260, "category": "openai"}
+          "getMysqlCorrectionsConnection": {
+            "line": 236,
+            "category": "db"
+          },
+          "getFeedbackDb": {
+            "line": 208,
+            "category": "db"
+          },
+          "storeFeedbackSuggestion": {
+            "line": 222,
+            "category": "db"
+          },
+          "storeTeacherMessage": {
+            "line": 279,
+            "category": "db"
+          },
+          "getTeacherConversation": {
+            "line": 315,
+            "category": "db"
+          },
+          "trackTopicSearch": {
+            "line": 364,
+            "category": "tracking"
+          },
+          "trackAppOpen": {
+            "line": 427,
+            "category": "tracking"
+          },
+          "submitTeacherRequest": {
+            "line": 498,
+            "category": "requests"
+          },
+          "supportTeacherRequest": {
+            "line": 562,
+            "category": "requests"
+          },
+          "getTeacherRequests": {
+            "line": 676,
+            "category": "requests"
+          },
+          "sortCatalogEntries": {
+            "line": 831,
+            "category": "recommendations"
+          },
+          "normalizeKeyword": {
+            "line": 2703,
+            "category": "recommendations"
+          },
+          "extractAndNormalizeKeywords": {
+            "line": 2762,
+            "category": "recommendations"
+          },
+          "doesItemContainKeyword": {
+            "line": 2807,
+            "category": "recommendations"
+          },
+          "detectStrongKeyword": {
+            "line": 2859,
+            "category": "recommendations"
+          },
+          "loadYisumaticaApps": {
+            "line": 2880,
+            "category": "data_loaders"
+          },
+          "loadYisumaticaLessons": {
+            "line": 2949,
+            "category": "data_loaders"
+          },
+          "loadKehilaLessons": {
+            "line": 3002,
+            "category": "data_loaders"
+          },
+          "loadWorksheetCatalog": {
+            "line": 3061,
+            "category": "data_loaders"
+          },
+          "loadTotalLikes": {
+            "line": 3134,
+            "category": "data_loaders"
+          },
+          "loadYisumaticaPuzzles": {
+            "line": 3170,
+            "category": "data_loaders"
+          },
+          "buildAppImageUrl": {
+            "line": 3931,
+            "category": "url_builders"
+          },
+          "getAppIdentifier": {
+            "line": 4247,
+            "category": "url_builders"
+          },
+          "buildStructuredAppSummaries": {
+            "line": 4299,
+            "category": "openai"
+          },
+          "buildLessonSuggestionSummary": {
+            "line": 4330,
+            "category": "openai"
+          },
+          "callOpenAIChatCompletion": {
+            "line": 5105,
+            "category": "openai"
+          },
+          "trackTokenUsage": {
+            "line": 5138,
+            "category": "openai"
+          },
+          "findCachedResponse": {
+            "line": 5245,
+            "category": "corrections"
+          },
+          "ensureAiCorrectionsColumns": {
+            "line": 5373,
+            "category": "corrections"
+          },
+          "storeAiCorrection": {
+            "line": 5411,
+            "category": "corrections"
+          },
+          "fetchAiCorrections": {
+            "line": 5937,
+            "category": "corrections"
+          },
+          "fetchRecommendationOverrides": {
+            "line": 6127,
+            "category": "corrections"
+          },
+          "applyRecommendationOverrides": {
+            "line": 6232,
+            "category": "corrections"
+          },
+          "storeRecommendationOverride": {
+            "line": 6272,
+            "category": "corrections"
+          },
+          "buildYoutubeUrl": {
+            "line": 6346,
+            "category": "url_builders"
+          },
+          "buildPuzzleSiteUrl": {
+            "line": 6377,
+            "category": "url_builders"
+          },
+          "buildPuzzleContentUrl": {
+            "line": 6399,
+            "category": "url_builders"
+          },
+          "buildAppUrl": {
+            "line": 6433,
+            "category": "url_builders"
+          },
+          "mapSourceMetaFromItem": {
+            "line": 3259,
+            "category": "url_builders"
+          },
+          "callOpenAIForSelection": {
+            "line": 6660,
+            "category": "openai"
+          },
+          "extractTextFromResponse": {
+            "line": 8260,
+            "category": "openai"
+          }
         },
-
         "db_tables": [
-          "ai_corrections", "ai_teacher_conversations", "ai_recommendation_overrides",
-          "ai_teacher_requests", "ai_usage_tracking", "ai_feedback"
+          "ai_corrections",
+          "ai_teacher_conversations",
+          "ai_recommendation_overrides",
+          "ai_teacher_requests",
+          "ai_usage_tracking",
+          "ai_feedback"
         ],
-
         "external_apis": [
           "POST yisumaticaApi/getApps.php",
           "POST yisumaticaApi/getLessons.php",
@@ -132,96 +363,106 @@
           "POST yisumaticaApi/getUserLessons.php",
           "POST api.openai.com/v1/chat/completions"
         ],
-
         "lessons_learned": [
           {
             "timestamp": "2026-02-09T10:00:00",
             "category": "shadow_risk",
             "problem": "helpers.php and index.php both define submitTeacherRequest()",
             "solution": "Verify which definition wins before extracting. Test early AJAX handler separately.",
-            "context": "index.php:84,175,498"
+            "context": "index.php:84,175,498",
+            "engine": "claude-opus-4-6"
           },
           {
             "timestamp": "2026-02-09T10:00:01",
             "category": "load_bearing_hack",
             "problem": "ob_start() at line 4 prevents HTML leaking into AJAX JSON responses",
             "solution": "Do NOT remove until AJAX is fully separated into its own file",
-            "context": "index.php:4"
+            "context": "index.php:4",
+            "engine": "claude-opus-4-6"
           },
           {
             "timestamp": "2026-02-09T10:00:02",
             "category": "data_flow",
             "problem": "PHP -> HTML data-attributes -> JS. JS display bugs traced to PHP source not JS consumer.",
             "solution": "When extracting JS, PHP-injected data must move to data-* attrs or global var block",
-            "context": "lines 11200-12700 contain <?php echo ?> inside <script> blocks"
+            "context": "lines 11200-12700 contain <?php echo ?> inside <script> blocks",
+            "engine": "claude-opus-4-6"
           },
           {
             "timestamp": "2026-02-09T10:00:03",
             "category": "duplication_bug",
             "problem": "buildAppImageUrl logic exists in both PHP (line 3931) and JS (~line 17000). Already caused bugs.",
             "solution": "REMOVE JS-side image URL logic during frontend extraction. Rely on PHP-computed imageUrl.",
-            "context": "requests.md documents this as known bug source"
+            "context": "requests.md documents this as known bug source",
+            "engine": "claude-opus-4-6"
           },
           {
             "timestamp": "2026-02-09T10:00:04",
             "category": "auth_pattern",
             "problem": "Authentication is client-side only. Lines 188-195 set empty vars. JS checkSignIn() does real auth.",
             "solution": "Do not introduce server-side auth. This is intentional.",
-            "context": "index.php:188-195, JS ~line 12859"
+            "context": "index.php:188-195, JS ~line 12859",
+            "engine": "claude-opus-4-6"
           },
           {
             "timestamp": "2026-02-09T10:00:05",
             "category": "session_pattern",
             "problem": "No PHP sessions used. teacher_session_id is a raw cookie, 30-day expiry.",
             "solution": "Do not call session_start(). Cookie-based ID is intentional.",
-            "context": "index.php:200-205"
+            "context": "index.php:200-205",
+            "engine": "claude-opus-4-6"
           },
           {
             "timestamp": "2026-02-09T10:00:06",
             "category": "path_sensitivity",
             "problem": "connect.php searched in 5 paths because app deploys at different relative positions",
             "solution": ".env approach eliminates this. Ensure .env is discoverable from any deploy path.",
-            "context": "index.php:246-252"
+            "context": "index.php:246-252",
+            "engine": "claude-opus-4-6"
           },
           {
             "timestamp": "2026-02-09T10:00:07",
             "category": "duplication_pattern",
             "problem": "Every DB function has full MySQL impl then full SQLite impl (~12 functions, ~1500 lines)",
             "solution": "Database abstraction class. Highest-impact single change for the entire refactoring.",
-            "context": "trackTopicSearch, trackAppOpen, submitTeacherRequest, supportTeacherRequest, getTeacherRequests, storeTeacherMessage, getTeacherConversation, etc."
+            "context": "trackTopicSearch, trackAppOpen, submitTeacherRequest, supportTeacherRequest, getTeacherRequests, storeTeacherMessage, getTeacherConversation, etc.",
+            "engine": "claude-opus-4-6"
           },
           {
             "timestamp": "2026-02-09T10:00:08",
             "category": "duplication_pattern",
             "problem": "escapeHtml() defined 4+ times in separate <script> blocks",
             "solution": "Extract to single utils.js",
-            "context": "JS at ~12712, ~14074, ~16432, ~16943"
+            "context": "JS at ~12712, ~14074, ~16432, ~16943",
+            "engine": "claude-opus-4-6"
           },
           {
             "timestamp": "2026-02-09T10:00:09",
             "category": "noise",
             "problem": "Category toggle section has ~80 console.log lines for simple expand/collapse",
             "solution": "Remove all but error-level logging when extracting",
-            "context": "index.php:9724-9858"
+            "context": "index.php:9724-9858",
+            "engine": "claude-opus-4-6"
           },
           {
             "timestamp": "2026-02-09T10:00:10",
             "category": "runtime_ddl",
             "problem": "CREATE TABLE IF NOT EXISTS called inside tracking functions at runtime",
             "solution": "Remove from runtime functions. setup_databases.php already handles this.",
-            "context": "trackTopicSearch:374, trackAppOpen:443, submitTeacherRequest:508"
+            "context": "trackTopicSearch:374, trackAppOpen:443, submitTeacherRequest:508",
+            "engine": "claude-opus-4-6"
           },
           {
             "timestamp": "2026-02-09T10:00:11",
             "category": "security_positive",
             "problem": "No hardcoded passwords or API keys anywhere in repo. Prepared statements used consistently.",
             "solution": "Maintain this standard. All secrets via .env only.",
-            "context": "verified across all .php files"
+            "context": "verified across all .php files",
+            "engine": "claude-opus-4-6"
           }
         ]
       }
     },
-
     "db_architect": {
       "role": "Database Layer Architect",
       "description": "Creates unified Database class wrapping MySQL+SQLite. Creates .env config. Eliminates all dual-implementation DB functions.",
@@ -229,9 +470,20 @@
         "max_lessons": 100,
         "phase": 1,
         "depends_on": "auditor",
-        "target_files": ["config/.env", "config/env_loader.php", "includes/Database.php", "includes/db_functions.php"],
+        "target_files": [
+          "config/.env",
+          "config/env_loader.php",
+          "includes/Database.php",
+          "includes/db_functions.php"
+        ],
         "estimated_lines_removed": 1500,
-        "recall_types": ["shadow_risk", "load_bearing_hack", "path_sensitivity", "duplication_pattern", "runtime_ddl"]
+        "recall_types": [
+          "shadow_risk",
+          "load_bearing_hack",
+          "path_sensitivity",
+          "duplication_pattern",
+          "runtime_ddl"
+        ]
       },
       "experience": {
         "run_count": 0,
@@ -241,7 +493,6 @@
         "lessons_learned": []
       }
     },
-
     "backend_splitter": {
       "role": "PHP Module Extractor",
       "description": "Extracts PHP functions from index.php into includes/. Creates separate AJAX handler.",
@@ -250,14 +501,41 @@
         "phase": 2,
         "depends_on": "db_architect",
         "extraction_plan": {
-          "includes/data_loaders.php": {"category": "data_loaders", "functions": 6, "estimated_lines": 500},
-          "includes/recommendations.php": {"category": "recommendations", "functions": 10, "estimated_lines": 1000},
-          "includes/openai.php": {"category": "openai", "functions": 8, "estimated_lines": 800},
-          "includes/corrections.php": {"category": "corrections", "functions": 9, "estimated_lines": 700},
-          "includes/url_builders.php": {"category": "url_builders", "functions": 7, "estimated_lines": 400},
-          "api/ajax_handler.php": {"note": "Extract early handler + POST routing", "estimated_lines": 300}
+          "includes/data_loaders.php": {
+            "category": "data_loaders",
+            "functions": 6,
+            "estimated_lines": 500
+          },
+          "includes/recommendations.php": {
+            "category": "recommendations",
+            "functions": 10,
+            "estimated_lines": 1000
+          },
+          "includes/openai.php": {
+            "category": "openai",
+            "functions": 8,
+            "estimated_lines": 800
+          },
+          "includes/corrections.php": {
+            "category": "corrections",
+            "functions": 9,
+            "estimated_lines": 700
+          },
+          "includes/url_builders.php": {
+            "category": "url_builders",
+            "functions": 7,
+            "estimated_lines": 400
+          },
+          "api/ajax_handler.php": {
+            "note": "Extract early handler + POST routing",
+            "estimated_lines": 300
+          }
         },
-        "recall_types": ["shadow_risk", "load_bearing_hack", "data_flow"]
+        "recall_types": [
+          "shadow_risk",
+          "load_bearing_hack",
+          "data_flow"
+        ]
       },
       "experience": {
         "run_count": 0,
@@ -267,7 +545,6 @@
         "lessons_learned": []
       }
     },
-
     "frontend_splitter": {
       "role": "CSS and JavaScript Extractor",
       "description": "Extracts CSS to stylesheet. Splits ~7500 lines of JS into modules.",
@@ -276,18 +553,46 @@
         "phase": 3,
         "depends_on": "backend_splitter",
         "extraction_plan": {
-          "static/css/style.css": {"estimated_lines": 800},
-          "static/js/utils.js": {"note": "Single escapeHtml, debounce, getCookie", "estimated_lines": 100},
-          "static/js/cards.js": {"note": "REMOVE JS image URL logic", "estimated_lines": 200},
-          "static/js/auth.js": {"estimated_lines": 300},
-          "static/js/search.js": {"estimated_lines": 500},
-          "static/js/teacher-requests.js": {"estimated_lines": 200},
-          "static/js/student-link.js": {"estimated_lines": 300},
-          "static/js/modals.js": {"estimated_lines": 100},
-          "static/js/user-lessons.js": {"estimated_lines": 700},
-          "static/js/app.js": {"note": "Clean category toggle debug logs", "estimated_lines": 500}
+          "static/css/style.css": {
+            "estimated_lines": 800
+          },
+          "static/js/utils.js": {
+            "note": "Single escapeHtml, debounce, getCookie",
+            "estimated_lines": 100
+          },
+          "static/js/cards.js": {
+            "note": "REMOVE JS image URL logic",
+            "estimated_lines": 200
+          },
+          "static/js/auth.js": {
+            "estimated_lines": 300
+          },
+          "static/js/search.js": {
+            "estimated_lines": 500
+          },
+          "static/js/teacher-requests.js": {
+            "estimated_lines": 200
+          },
+          "static/js/student-link.js": {
+            "estimated_lines": 300
+          },
+          "static/js/modals.js": {
+            "estimated_lines": 100
+          },
+          "static/js/user-lessons.js": {
+            "estimated_lines": 700
+          },
+          "static/js/app.js": {
+            "note": "Clean category toggle debug logs",
+            "estimated_lines": 500
+          }
         },
-        "recall_types": ["data_flow", "duplication_bug", "duplication_pattern", "noise"]
+        "recall_types": [
+          "data_flow",
+          "duplication_bug",
+          "duplication_pattern",
+          "noise"
+        ]
       },
       "experience": {
         "run_count": 0,
@@ -297,7 +602,6 @@
         "lessons_learned": []
       }
     },
-
     "cleanup": {
       "role": "Final Cleanup",
       "description": "Removes dead code, backup files, excessive logging. Initializes git. Verifies app.",
@@ -319,9 +623,57 @@
         "files_removed": [],
         "lessons_learned": []
       }
+    },
+    "tester": {
+      "role": "Tester",
+      "description": "Verifies components work after each phase. Reads other agents' deposits to know what changed. Runs syntax checks, include chain verification, endpoint checks, and smoke test checklists. Tracks regressions across phases.",
+      "config": {
+        "max_lessons": 150,
+        "run_after_phases": [
+          "db_architect",
+          "backend_splitter",
+          "frontend_splitter",
+          "cleanup"
+        ],
+        "available_tools": [
+          "php -l"
+        ],
+        "test_levels": {
+          "syntax": "php -l on all changed/created .php files",
+          "include_chain": "Verify all require_once/include paths resolve",
+          "endpoint": "curl each AJAX action, verify JSON response (not HTML pollution)",
+          "smoke": "Load main page, search, click card, submit request",
+          "regression": "Re-check all previously broken things"
+        },
+        "ajax_actions_to_test": [
+          "teacher_chat",
+          "ai_summary",
+          "get_teacher_requests",
+          "submit_teacher_request",
+          "support_teacher_request",
+          "track_usage",
+          "track_app_open",
+          "get_group_lessons",
+          "get_user_lessons",
+          "fetch_corrections"
+        ],
+        "recall_types": [
+          "test_failure",
+          "regression",
+          "flaky",
+          "load_bearing_hack"
+        ]
+      },
+      "experience": {
+        "run_count": 0,
+        "status": "pending",
+        "test_results": [],
+        "regressions_found": [],
+        "flaky_areas": [],
+        "lessons_learned": []
+      }
     }
   },
-
   "universal_knowledge": {
     "monolith_structure": "17,138-line index.php: PHP backend (1-8280), HTML (8282-9600), JS (9600-17138)",
     "data_flow": "PHP -> HTML data-attributes -> JS. Debug at PHP source.",
