@@ -4,7 +4,7 @@
 
 **The agent is intelligent but ephemeral. The JSON is its persistent memory.**
 
-An AI agent lives for one run. It is born, it thinks, it acts, it dies. What survives is what it deposits into the JSON — its experience, context, lessons, and observations. The next incarnation reads the JSON, reconstructs awareness from the deposited memory, does new work, and deposits again before dying.
+An AI agent lives for one run. It is born, it thinks, it acts, it dies. What survives is what it deposits into the JSON — its experience, context, findings, and observations. The next incarnation reads the JSON, reconstructs awareness from the deposited memory, does new work, and deposits again before dying.
 
 The JSON is not the brain. The agent is the brain. The JSON is the **diary, the filing cabinet, the institutional memory** that outlives any single incarnation.
 
@@ -29,7 +29,7 @@ Each agent's section in the JSON has three layers:
 └─────────────────────────────────┘
 ┌─────────────────────────────────┐
 │  EXPERIENCE (accumulated)       │
-│  - lessons_learned[]            │
+│  - findings[]                   │
 │  - stats, patterns, hit rates   │
 │  - contacts, discovered data    │
 │  - grows with every run         │
@@ -45,7 +45,7 @@ Parameters that control HOW the agent works. Tunable but stable. Represents best
 
 ### Experience
 Everything the agent has LEARNED from doing its work. Structured so the next incarnation can quickly reconstruct awareness:
-- `lessons_learned[]` — structured entries with category, problem, solution, context
+- `findings[]` — structured entries with category, problem, solution, context
 - Stats — counters, rates, histories
 - Patterns — what works, what's dead, what's changed
 
@@ -66,7 +66,7 @@ Every agent follows the same lifecycle, regardless of complexity:
 ```
 
 ```python
-agent.recall("failure")          →  reads past lessons by category
+agent.recall("failure")          →  reads past findings by category
 agent.learn("failure",           →  records a new lesson
     problem="API returned 500",
     solution="Retry with exponential backoff",
@@ -74,7 +74,7 @@ agent.learn("failure",           →  records a new lesson
 agent.save_state()               →  deposits back to JSON
 ```
 
-Lessons are categorized so agents can recall specific types. Categories are domain-specific — each job defines its own. Lessons are trimmed to `max_lessons` to prevent unbounded growth. Old lessons fall off. Recent experience is always prioritized.
+Findings are categorized so agents can recall specific types. Categories are domain-specific — each job defines its own. Findings are trimmed to `max_findings` to prevent unbounded growth. Old findings fall off. Recent experience is always prioritized.
 
 
 ## Universal Knowledge vs Project-Specific Experience
@@ -93,7 +93,7 @@ Lessons are categorized so agents can recall specific types. Categories are doma
 When porting `team.json` to a new project:
 - `universal_knowledge` → **preserved** (patterns, rankings, shared truths)
 - Agent `config` → **preserved** (best practices, thresholds)
-- Agent `experience` → **reset** (lessons, stats, project-specific data)
+- Agent `experience` → **reset** (findings, stats, project-specific data)
 
 Universal knowledge is the team's **collective wisdom** — things that are true regardless of which project. Experience is **situational** — what this specific deployment has encountered.
 
@@ -201,8 +201,8 @@ In complex projects, an "agent" might be backed by an actual LLM (Claude, GPT, e
 1. Load agent's memory from JSON
 2. Feed memory as context to the LLM
 3. LLM reasons, acts, produces results
-4. Extract structured lessons from LLM output
-5. Deposit lessons back to JSON
+4. Extract structured findings from LLM output
+5. Deposit findings back to JSON
 6. LLM context is gone (ephemeral). Memory persists.
 ```
 
@@ -327,14 +327,14 @@ The test: **does this agent help CREATE a project, or is it a PRODUCT of a proje
 
 ## Attention Management: Sub-Workers Write Abstractions
 
-In a team with hierarchy, detailed lessons are noise for the roles above. A sub-worker should deposit **two levels** of information:
+In a team with hierarchy, detailed findings are noise for the roles above. A sub-worker should deposit **two levels** of information:
 
-1. **Detailed lessons** — for its own next incarnation (full context, specific files, exact errors)
+1. **Detailed findings** — for its own next incarnation (full context, specific files, exact errors)
 2. **A summary abstraction** — for the manager/architect role (compressed, decision-focused)
 
 ```
 Builder deposits:
-  lessons_learned: [
+  findings: [
     { detailed lesson 1 },
     { detailed lesson 2 },
     ...10 more...
@@ -345,10 +345,33 @@ Builder deposits:
 Architect reads:
   → only the session_summary lesson from builder
   → saves attention for architectural decisions
-  → can drill into detailed lessons if needed
+  → can drill into detailed findings if needed
 ```
 
 This is **attention management through hierarchy**. The worker knows what matters because it just did the work. It compresses its experience into what the roles above actually need. Raw details persist for when the same role re-incarnates.
+
+
+## Resource Tracking Protocol
+
+Every agent session MUST record:
+1. **Engine** — which AI model did the work (e.g. "claude-opus-4-6", "claude-sonnet-4-5")
+2. **Sub-agents spawned** — ID, task description, token count, model used
+3. **Total token usage** — sum of all agent tokens (main session tokens estimated if not available)
+
+This serves two purposes:
+- **Trust calibration**: Opus architecture decisions carry more weight than Haiku lint checks
+- **Cost awareness**: Know which phases are expensive and which are cheap. Helps plan future sessions.
+
+Record in experience as:
+```json
+"token_usage": {
+  "session_engine": "claude-opus-4-6",
+  "agents_spawned": [
+    {"id": "abc123", "task": "what it did", "tokens": 44287, "model": "opus"}
+  ],
+  "total_agent_tokens": 180355
+}
+```
 
 
 ## Design Decisions and Tradeoffs
@@ -357,10 +380,11 @@ This is **attention management through hierarchy**. The worker knows what matter
 |----------|-----|----------|
 | JSON not database | Portable, diffable, no deps | Size limit ~50MB practical |
 | Agent is ephemeral | Stateless, restartable, replaceable | Must deposit everything or it's lost |
-| Lessons trimmed to max | Prevents unbounded growth | Old lessons are lost |
+| Findings trimmed to max | Prevents unbounded growth | Old findings are lost |
 | Experience reset on port | Clean start per project | Loses project-specific tricks |
 | Config preserved on port | Best practices transfer | May need manual tuning |
 | One JSON = one team | Atomic, simple, portable | Needs locking if truly parallel |
+| Track token usage | Cost awareness + trust calibration | Approximate (sub-agent only) |
 
 
 ## The Agent Mantra
