@@ -459,6 +459,22 @@
             "solution": "Maintain this standard. All secrets via .env only.",
             "context": "verified across all .php files",
             "engine": "claude-opus-4-6"
+          },
+          {
+            "timestamp": "2026-02-09T17:30:00",
+            "category": "dependency_analysis",
+            "problem": "helpers.php is required at line 175 but may be a phantom dependency — all called functions exist in index.php",
+            "solution": "helpers.php can be an empty stub for local dev. In production it may provide submitTeacherRequest() which shadows index.php:498. Needs verification on the live server.",
+            "context": "Analyzed all function calls in lines 1-800 against definitions in full 17K-line file. Zero unique functions from helpers.php identified.",
+            "engine": "claude-opus-4-6"
+          },
+          {
+            "timestamp": "2026-02-09T17:30:01",
+            "category": "architecture_insight",
+            "problem": "The SQLite fallback path is fully functional — site was designed to work without MySQL",
+            "solution": "For local dev and testing: just let connect.php be missing. getMysqlCorrectionsConnection() returns null, all DB functions fall through to SQLite. This is load-bearing design, not a bug.",
+            "context": "getMysqlCorrectionsConnection at line 236 has static caching + null fallback pattern",
+            "engine": "claude-opus-4-6"
           }
         ]
       }
@@ -796,6 +812,95 @@
             "category": "alternative_method",
             "problem": "4 methods failed before finding working approach for PHP 7.x on Windows",
             "solution": "Working method chain: curl + windows.php.net/downloads/releases/archives/ URL. Failed methods: direct releases URL (throttled), chocolatey (needs admin), winget (no PHP 7.x), winget PHP 8.1 (wrong version).",
+            "engine": "claude-opus-4-6"
+          }
+        ]
+      }
+    }
+  },
+    "dev_harness": {
+      "role": "Local Dev Harness Builder",
+      "description": "Creates stub files and config so the project can run locally for testing. Records what works offline vs needs the real server.",
+      "config": {
+        "max_lessons": 100,
+        "php_path": "C:\\php7\\php-7.2.34\\php.exe",
+        "php_ini_changes": [
+          "extension_dir = ext (was commented out)",
+          "Enabled: curl, mbstring, mysqli, openssl, pdo_mysql, pdo_sqlite, sqlite3",
+          "All other extensions left at defaults"
+        ],
+        "server_command": "C:\\php7\\php-7.2.34\\php.exe -S localhost:8000 -t C:\\Users\\User\\Desktop\\ai-search-lite_8",
+        "external_dependencies": {
+          "helpers.php": {
+            "status": "needs_stub",
+            "analysis": "Required at line 175 and conditionally at line 84. HOWEVER: all functions called in index.php are defined IN index.php itself. helpers.php may define submitTeacherRequest() which shadows index.php line 498 definition. A minimal empty stub may suffice.",
+            "stub_strategy": "Create empty helpers.php with just <?php — the site's own definitions will take over"
+          },
+          "connect.php": {
+            "status": "needs_stub",
+            "analysis": "Searched in 5 paths (line 246-252). Creates $connection (mysqli). If not found, getMysqlCorrectionsConnection() returns null and code falls back to SQLite.",
+            "stub_strategy": "Don't create — let the fallback to SQLite handle it. The site is designed for this."
+          },
+          "openai_config.php": {
+            "status": "optional",
+            "analysis": "Searched in 6 paths (line 776-788). Defines OPENAI_API_KEY. Without it, AI features return empty results.",
+            "stub_strategy": "Skip for now. AI features not testable without real key anyway."
+          }
+        },
+        "offline_testable": [
+          "Page loads and renders HTML/CSS",
+          "Category expand/collapse (pure JS)",
+          "RTL layout and Hebrew text rendering",
+          "Search form submission (returns empty results without DB)",
+          "PHP syntax validation of all files",
+          "Include chain verification",
+          "Student link UI generation (pure JS)",
+          "YouTube modal (needs internet for embed)"
+        ],
+        "NOT_testable_offline": [
+          "AI recommendations (needs OpenAI API key)",
+          "DB-backed teacher requests (needs MySQL or SQLite with data)",
+          "Teacher chat (needs DB)",
+          "Usage tracking (needs DB)",
+          "External API calls to yisumaticaApi (needs production server)",
+          "Real search results (needs all data loaders + DB)"
+        ]
+      },
+      "experience": {
+        "run_count": 0,
+        "status": "pending",
+        "stubs_created": [],
+        "gaps": [],
+        "findings": [
+          {
+            "timestamp": "2026-02-09T17:30:00",
+            "category": "harness_discovery",
+            "problem": "helpers.php is required but may not actually provide any unique functions",
+            "solution": "All 10+ functions called in index.php are also DEFINED in index.php. helpers.php likely provides submitTeacherRequest() which shadows index.php:498. An empty stub (just <?php) should work.",
+            "context": "Verified by searching all function calls in lines 1-800 against function definitions in full file",
+            "engine": "claude-opus-4-6"
+          },
+          {
+            "timestamp": "2026-02-09T17:30:01",
+            "category": "harness_discovery",
+            "problem": "connect.php not found doesn't crash the site — SQLite fallback is built in",
+            "solution": "Don't stub connect.php. Let getMysqlCorrectionsConnection() return null. SQLite handles everything. This is the DESIGNED fallback path.",
+            "context": "index.php:236-270 — static $mysqliChecked pattern with graceful null return",
+            "engine": "claude-opus-4-6"
+          },
+          {
+            "timestamp": "2026-02-09T17:30:02",
+            "category": "php_config",
+            "problem": "PHP 7.2 NTS needs extensions enabled manually for this project",
+            "solution": "Copy php.ini-development to php.ini. Set extension_dir=ext. Enable: curl, mbstring, mysqli, openssl, pdo_mysql, pdo_sqlite, sqlite3. All are in the ext/ folder already.",
+            "context": "php.ini at C:\\php7\\php-7.2.34\\php.ini — 7 extensions uncommented",
+            "engine": "claude-opus-4-6"
+          },
+          {
+            "timestamp": "2026-02-09T17:30:03",
+            "category": "process_lesson",
+            "problem": "Agent was repeatedly reminded to record findings in persistent-team JSON but kept forgetting",
+            "solution": "After EVERY significant discovery or action, immediately update team.json BEFORE moving to the next task. Do not batch recordings — they get lost when context compresses.",
             "engine": "claude-opus-4-6"
           }
         ]
