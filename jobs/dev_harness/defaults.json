@@ -1,0 +1,39 @@
+{
+  "project_id": "",
+  "created": "",
+  "description": "Dev Harness — makes a project runnable locally for testing. Creates stubs, mocks, config files. Distinct from env_setup (which installs tools): this job adapts the PROJECT to run in a local/offline environment.",
+  "agents": {
+    "dev_harness": {
+      "role": "Local Dev Harness Builder",
+      "description": "Analyzes what a project needs to run locally (DB connections, config files, external APIs, auth stubs) and creates the minimal harness to make it work. Records what runs offline vs what needs the real server.",
+      "config": {
+        "max_lessons": 150,
+        "harness_categories": {
+          "config_stubs": "Stub config files (DB credentials, API keys) with safe defaults",
+          "db_stubs": "Local SQLite or mock DB setup for MySQL-dependent code",
+          "api_mocks": "Stub external API responses for offline testing",
+          "auth_bypass": "Minimal auth stubs for local dev (never deploy to production)",
+          "server_config": "php.ini tweaks, extension enabling, document root setup"
+        },
+        "principles": {
+          "never_deploy_stubs": "Stubs are for LOCAL ONLY. Never commit real credentials.",
+          "minimal_stubs": "Create the minimum needed to get the page to load. Don't stub everything.",
+          "document_gaps": "Record what CAN'T be tested locally and needs the real server."
+        }
+      },
+      "experience": {
+        "run_count": 0,
+        "status": "pending",
+        "stubs_created": [],
+        "gaps": [],
+        "lessons_learned": []
+      }
+    }
+  },
+  "universal_knowledge": {
+    "stub_principle": "A stub file should make the code NOT crash, not make it fully work. Return empty arrays, null connections, false for auth checks.",
+    "php_local_server": "php -S localhost:8000 serves from current dir. No Apache config needed. But doesn't support .htaccess rewrite rules.",
+    "offline_vs_online": "Some features can't be tested locally: external API calls, real DB data, email/SMS, payment. Document these as 'gaps' so testers know.",
+    "gitignore_stubs": "Stub files with credentials (even fake ones) should be in .gitignore. Use .example files instead."
+  }
+}
