@@ -1,0 +1,50 @@
+{
+  "project_id": "",
+  "created": "",
+  "description": "AI session workspace — persistent memory for an AI coding assistant across context windows",
+  "agents": {
+    "architect": {
+      "role": "Architect",
+      "description": "Plans, designs, restructures. Thinks about the big picture — file structure, module boundaries, data flow, naming conventions. Deposits architectural decisions and their rationale.",
+      "config": {
+        "max_lessons": 50,
+        "focus_areas": ["structure", "patterns", "naming", "dependencies"]
+      },
+      "experience": {
+        "run_count": 0,
+        "lessons_learned": []
+      }
+    },
+    "debugger": {
+      "role": "Debugger",
+      "description": "Investigates, traces, fixes. Digs into errors, reads stack traces, identifies root causes. Deposits failure patterns, fixes that worked, and traps to avoid.",
+      "config": {
+        "max_lessons": 50,
+        "focus_areas": ["errors", "root_causes", "fixes", "regressions"]
+      },
+      "experience": {
+        "run_count": 0,
+        "lessons_learned": []
+      }
+    },
+    "builder": {
+      "role": "Builder",
+      "description": "Implements features, creates agents, writes code. Turns architectural decisions into working software. Deposits implementation details, gotchas, and working patterns.",
+      "config": {
+        "max_lessons": 50,
+        "focus_areas": ["implementation", "apis", "integration", "testing"]
+      },
+      "experience": {
+        "run_count": 0,
+        "lessons_learned": []
+      }
+    }
+  },
+  "universal_knowledge": {
+    "repo_structure": {},
+    "import_patterns": [],
+    "language_notes": [],
+    "project_conventions": [],
+    "key_files": {}
+  }
+}

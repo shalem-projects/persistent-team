@@ -1,0 +1,39 @@
+{
+  "project_id": "",
+  "created": "",
+  "description": "Web scraper team — fetch pages, extract links, learn patterns",
+  "agents": {
+    "scraper": {
+      "role": "Web Scraper",
+      "description": "Fetches web pages, extracts links and content, learns which URLs are alive or dead, tracks success rates across runs.",
+      "config": {
+        "max_lessons": 100,
+        "entry_urls": [],
+        "allowed_domains": [],
+        "request_delay_seconds": 1.0,
+        "max_retries": 3,
+        "timeout_seconds": 30,
+        "user_agent": "persistent-team-scraper/1.0",
+        "follow_redirects": true,
+        "max_depth": 3
+      },
+      "experience": {
+        "run_count": 0,
+        "lessons_learned": [],
+        "success_count": 0,
+        "failure_count": 0,
+        "discovered_urls": []
+      }
+    }
+  },
+  "universal_knowledge": {
+    "common_status_codes": {
+      "200": "OK",
+      "301": "Moved permanently",
+      "403": "Forbidden",
+      "404": "Not found",
+      "429": "Rate limited",
+      "500": "Server error"
+    }
+  }
+}

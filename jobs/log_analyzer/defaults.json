@@ -1,0 +1,36 @@
+{
+  "project_id": "",
+  "created": "",
+  "description": "Log analyzer team — parse logs, categorize errors, track trends",
+  "agents": {
+    "analyzer": {
+      "role": "Log Analyzer",
+      "description": "Parses log files, categorizes errors by severity and pattern, tracks frequency trends across runs to detect emerging issues.",
+      "config": {
+        "max_lessons": 100,
+        "log_paths": [],
+        "error_patterns": {
+          "critical": ["CRITICAL", "FATAL", "PANIC"],
+          "error": ["ERROR", "Exception", "Traceback"],
+          "warning": ["WARNING", "WARN", "DEPRECAT"],
+          "info": ["INFO"]
+        },
+        "severity_order": ["critical", "error", "warning", "info"],
+        "tail_lines": 1000,
+        "track_frequency": true
+      },
+      "experience": {
+        "run_count": 0,
+        "lessons_learned": [],
+        "error_frequency": {},
+        "last_analyzed_positions": {}
+      }
+    }
+  },
+  "universal_knowledge": {
+    "common_log_formats": [
+      "%(asctime)s %(levelname)s %(message)s",
+      "%(asctime)s [%(levelname)s] %(name)s: %(message)s"
+    ]
+  }
+}
