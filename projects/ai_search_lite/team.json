@@ -689,7 +689,8 @@
       "experience": {
         "run_count": 1,
         "last_run": "2026-02-09",
-        "status": "in_progress",
+        "status": "complete",
+        "php_path": "C:\\php7\\php-7.2.34\\php.exe",
         "installations": [
           {
             "tool": "php",
@@ -729,6 +730,17 @@
             "engine": "claude-opus-4-6",
             "error_type": "version_mismatch",
             "lesson": "Always check production version constraint BEFORE falling back to different version. The agent ignored the user-stated PHP 7.2 requirement."
+          },
+          {
+            "tool": "php",
+            "target_version": "7.2.34",
+            "method": "curl from windows.php.net/archives",
+            "success": true,
+            "duration_s": 30,
+            "notes": "Downloaded from archives URL (not releases). 26.1MB completed in ~30s. KEY INSIGHT: archives/ path is MUCH faster than releases/ path on windows.php.net. Extracted to C:\\php7\\php-7.2.34\\. Verified: PHP 7.2.34 (cli) NTS MSVC15 x64.",
+            "timestamp": "2026-02-09T17:13:00",
+            "engine": "claude-opus-4-6",
+            "install_path": "C:\\php7\\php-7.2.34"
           }
         ],
         "findings": [
@@ -769,6 +781,21 @@
             "category": "alternative_method",
             "problem": "Need PHP 7.x on Windows without admin and with slow windows.php.net",
             "solution": "Next attempts should try: (1) resume partial curl download with -C flag, (2) XAMPP portable 7.x, (3) download from museum.php.net or archive mirror, (4) ask user if they have PHP installer already",
+            "engine": "claude-opus-4-6"
+          },
+          {
+            "timestamp": "2026-02-09T17:13:00",
+            "category": "install_success",
+            "problem": "Needed PHP 7.2 on Windows. Package managers don't have it. Direct download from releases/ was throttled.",
+            "solution": "Use windows.php.net/downloads/releases/archives/ (NOT /releases/). Archives path downloads at full speed (~1MB/s vs ~3KB/s from releases path). curl with --max-time 600 works fine.",
+            "context": "PHP 7.2.34 NTS installed at C:\\php7\\php-7.2.34\\php.exe",
+            "engine": "claude-opus-4-6"
+          },
+          {
+            "timestamp": "2026-02-09T17:14:00",
+            "category": "alternative_method",
+            "problem": "4 methods failed before finding working approach for PHP 7.x on Windows",
+            "solution": "Working method chain: curl + windows.php.net/downloads/releases/archives/ URL. Failed methods: direct releases URL (throttled), chocolatey (needs admin), winget (no PHP 7.x), winget PHP 8.1 (wrong version).",
             "engine": "claude-opus-4-6"
           }
         ]
