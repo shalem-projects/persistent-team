@@ -813,6 +813,14 @@
             "problem": "4 methods failed before finding working approach for PHP 7.x on Windows",
             "solution": "Working method chain: curl + windows.php.net/downloads/releases/archives/ URL. Failed methods: direct releases URL (throttled), chocolatey (needs admin), winget (no PHP 7.x), winget PHP 8.1 (wrong version).",
             "engine": "claude-opus-4-6"
+          },
+          {
+            "timestamp": "2026-02-09T17:45:00",
+            "category": "correction",
+            "problem": "Previously believed chocolatey couldn't find PHP 7.4.33 — WRONG. It has the package (approved).",
+            "solution": "choco install php --version=7.4.33 WOULD work if run as admin or after removing stale lock file. The failure was permissions, not package availability. With admin rights, chocolatey is the fastest path to PHP 7.4 on Windows.",
+            "context": "choco search php --version 7.4.33 returns: 'php 7.4.33 [Approved]'",
+            "engine": "claude-opus-4-6"
           }
         ]
       }
