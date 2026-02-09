@@ -30,6 +30,8 @@
     "version_rule": "MUST match production version. Do NOT install a newer major version as fallback without explicit user approval. PHP 7->8 and similar major jumps break things.",
     "machine_context": "Different machines have different package managers available. Record which are present on each machine.",
     "failure_recording": "Record EVERY failed attempt with: method tried, error message, duration, reason for failure. This prevents next incarnation from wasting time on the same dead ends.",
-    "windows_php7_lesson": "As of 2026: winget has no PHP 7.x. Chocolatey may have old versions but needs admin. windows.php.net throttles downloads heavily (~3KB/s). Best options for PHP 7.x on Windows: XAMPP portable bundle, or museum.php.net archives."
+    "windows_php7_lesson": "As of 2026: winget has no PHP 7.x. Chocolatey may have old versions but needs admin. windows.php.net/downloads/releases/ throttles heavily (~3KB/s). SOLUTION: use windows.php.net/downloads/releases/archives/ instead — full speed (~1MB/s). XAMPP portable also works.",
+    "process_discipline": "Record findings in team.json IMMEDIATELY after each discovery. Do not batch. Context compression loses unrecorded work. Every action should leave a trace.",
+    "version_mismatch_severity": "Installing the wrong major version is worse than having no installation. A wrong version gives false confidence — tests pass locally but break in production. Always prefer 'no local version' over 'wrong local version' unless user approves the gap."
   }
 }
