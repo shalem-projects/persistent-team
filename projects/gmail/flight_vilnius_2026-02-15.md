@@ -43,7 +43,20 @@
 - **Weight options:** 10 kg / 20 kg / 26 kg / 32 kg
 - Up to 6 pieces per passenger
 
+## Quick Links
+
+| What | Link |
+|------|------|
+| **My Booking (overview)** | https://il.flightnetwork.com/order-load-ref/H4sIAAAAAAAA_7ON043XjYsHk7aGJpYmZiYGRhamNUAQ7OHo4-oLFDNySM9NzMzRS87PBQCCbjuYLwAAAA==?source=ibe-email&targetTab=order-details |
+| **Add Baggage / Extras** | https://il.flightnetwork.com/order-load-ref/H4sIAAAAAAAA_7ON043XjYsHk7aGJpYmZiYGRhamNUAQ7OHo4-oLFDNySM9NzMzRS87PBQCCbjuYLwAAAA==?targetTab=extra-products |
+| **Fare Rules & Travel Info** | https://il.flightnetwork.com/order-load-ref/H4sIAAAAAAAA_7ON043XjYsHk7aGJpYmZiYGRhamNUAQ7OHo4-oLFDNySM9NzMzRS87PBQCCbjuYLwAAAA==?show-fare-rules=true&source=ibe-email&targetTab=travel-information |
+| **Order Status** | https://il.flightnetwork.com/order-status-ref/H4sIAAAAAAAA_7ON043XjYsHk7aGJpYmZiYGRhamNUAQ7OHo4-oLFDNySM9NzMzRS87PBQCCbjuYLwAAAA== |
+| **Airline Baggage Info** | https://il.flightnetwork.com/rf/carriers |
+| **Flightnetwork FAQ** | https://il.flightnetwork.com/c/faq |
+| **Contact Support** | https://il.flightnetwork.com/rf/contact-us |
+| **Wizz Air Check-in** | https://wizzair.com/en-gb/check-in |
+| **Wizz Air Baggage** | https://wizzair.com/en-gb/help-centre/booking-information-and-services/baggage |
+
 ## Notes
-- Check baggage purchased via Flightnetwork "My Bookings" or Wizz Air directly
 - Low-cost carrier — extras (seat selection, baggage, priority) cost extra
 - Check Wizz Air website for last-minute schedule changes
