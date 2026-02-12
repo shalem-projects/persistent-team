@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vilnius Flight — Feb 2026</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f0f2f5; color: #1a1a1a; padding: 12px; max-width: 600px; margin: 0 auto; }
+  h1 { font-size: 1.4em; text-align: center; margin: 16px 0 8px; }
+  .subtitle { text-align: center; color: #666; font-size: 0.9em; margin-bottom: 16px; }
+  .card { background: #fff; border-radius: 12px; padding: 16px; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+  .card h2 { font-size: 1.05em; margin-bottom: 10px; color: #333; border-bottom: 2px solid #4a90d9; padding-bottom: 6px; }
+  .flight-block { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; }
+  .flight-block + .flight-block { border-top: 1px solid #eee; }
+  .airport { text-align: center; min-width: 70px; }
+  .airport .code { font-size: 1.5em; font-weight: 700; color: #4a90d9; }
+  .airport .city { font-size: 0.75em; color: #888; }
+  .flight-mid { text-align: center; flex: 1; padding: 0 8px; }
+  .flight-mid .arrow { font-size: 1.3em; color: #4a90d9; letter-spacing: 2px; }
+  .flight-mid .time { font-size: 0.95em; font-weight: 600; }
+  .flight-mid .date { font-size: 0.8em; color: #666; }
+  .flight-mid .dur { font-size: 0.7em; color: #999; }
+  .label { font-size: 0.75em; color: #999; text-transform: uppercase; letter-spacing: 0.5px; }
+  .badge { display: inline-block; background: #e8f0fe; color: #4a90d9; font-weight: 600; font-size: 0.8em; padding: 2px 8px; border-radius: 6px; }
+  .pax-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #f5f5f5; font-size: 0.9em; }
+  .pax-row:last-child { border-bottom: none; }
+  .pax-name { font-weight: 600; }
+  .pax-type { color: #888; font-size: 0.85em; }
+  .bag-item { padding: 10px 0; border-bottom: 1px solid #f0f0f0; }
+  .bag-item:last-child { border-bottom: none; }
+  .bag-title { font-weight: 700; font-size: 0.95em; }
+  .bag-size { font-size: 1.1em; color: #4a90d9; font-weight: 700; margin: 4px 0; }
+  .bag-note { font-size: 0.8em; color: #888; }
+  .bag-free { background: #e8f5e9; color: #2e7d32; font-size: 0.7em; padding: 2px 6px; border-radius: 4px; font-weight: 600; }
+  .bag-paid { background: #fff3e0; color: #e65100; font-size: 0.7em; padding: 2px 6px; border-radius: 4px; font-weight: 600; }
+  .links-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .link-btn { display: block; text-align: center; padding: 12px 8px; background: #4a90d9; color: #fff; text-decoration: none; border-radius: 8px; font-size: 0.85em; font-weight: 600; transition: background 0.2s; }
+  .link-btn:active { background: #3a7bc8; }
+  .link-btn.secondary { background: #f0f2f5; color: #333; }
+  .link-btn.secondary:active { background: #e0e2e5; }
+  .link-btn.full { grid-column: 1 / -1; background: #1a73e8; font-size: 0.95em; padding: 14px; }
+  .order-info { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+  .order-info div { flex: 1; min-width: 120px; }
+  .order-val { font-weight: 700; font-size: 1em; }
+</style>
+</head>
+<body>
+
+<h1>Vilnius, Lithuania</h1>
+<p class="subtitle">Wizz Air &middot; 4 passengers &middot; Feb 2026</p>
+
+<div class="card">
+  <h2>Outbound Flight</h2>
+  <div class="flight-block">
+    <div class="airport">
+      <div class="code">TLV</div>
+      <div class="city">Tel Aviv</div>
+    </div>
+    <div class="flight-mid">
+      <div class="date">Sun 15 Feb 2026</div>
+      <div class="arrow">———✈———&gt;</div>
+      <div class="time">11:05 → 15:35</div>
+      <div class="dur">4h 30min</div>
+    </div>
+    <div class="airport">
+      <div class="code">VNO</div>
+      <div class="city">Vilnius</div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Return Flight</h2>
+  <div class="flight-block">
+    <div class="airport">
+      <div class="code">VNO</div>
+      <div class="city">Vilnius</div>
+    </div>
+    <div class="flight-mid">
+      <div class="date">Wed 18 Feb 2026</div>
+      <div class="arrow">———✈———&gt;</div>
+      <div class="time">06:00 → 10:10</div>
+      <div class="dur">4h 10min</div>
+    </div>
+    <div class="airport">
+      <div class="code">TLV</div>
+      <div class="city">Tel Aviv</div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Booking</h2>
+  <div class="order-info">
+    <div>
+      <div class="label">Order</div>
+      <div class="order-val">1106-762-326</div>
+    </div>
+    <div>
+      <div class="label">Total</div>
+      <div class="order-val">$600.39</div>
+    </div>
+    <div>
+      <div class="label">Airline</div>
+      <div class="order-val"><span class="badge">Wizz Air</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Passengers</h2>
+  <div class="pax-row"><span class="pax-name">Zvi Bezalel Shalem</span> <span class="pax-type">Adult</span></div>
+  <div class="pax-row"><span class="pax-name">Michal Zivony Shalem</span> <span class="pax-type">Adult</span></div>
+  <div class="pax-row"><span class="pax-name">Yaara Shalem</span> <span class="pax-type">Child</span></div>
+  <div class="pax-row"><span class="pax-name">Naomi Devash Shalem</span> <span class="pax-type">Child</span></div>
+</div>
+
+<div class="card">
+  <h2>Suitcase / Baggage Sizes</h2>
+  <div class="bag-item">
+    <div class="bag-title">Personal Bag <span class="bag-free">FREE</span></div>
+    <div class="bag-size">40 &times; 30 &times; 20 cm</div>
+    <div class="bag-note">Max 10 kg &middot; Must fit under seat</div>
+  </div>
+  <div class="bag-item">
+    <div class="bag-title">Cabin Bag <span class="bag-paid">WIZZ PRIORITY</span></div>
+    <div class="bag-size">55 &times; 40 &times; 23 cm</div>
+    <div class="bag-note">Max 10 kg &middot; Wheels may add 5 cm</div>
+  </div>
+  <div class="bag-item">
+    <div class="bag-title">Checked Bag <span class="bag-paid">PURCHASED</span></div>
+    <div class="bag-size">149 cm total (L+W+H)</div>
+    <div class="bag-note">Options: 10 / 20 / 26 / 32 kg &middot; Up to 6 per person</div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Quick Links</h2>
+  <div class="links-grid">
+    <a class="link-btn full" href="https://il.flightnetwork.com/order-load-ref/H4sIAAAAAAAA_7ON043XjYsHk7aGJpYmZiYGRhamNUAQ7OHo4-oLFDNySM9NzMzRS87PBQCCbjuYLwAAAA==?source=ibe-email&targetTab=order-details" target="_blank">My Booking</a>
+    <a class="link-btn" href="https://il.flightnetwork.com/order-load-ref/H4sIAAAAAAAA_7ON043XjYsHk7aGJpYmZiYGRhamNUAQ7OHo4-oLFDNySM9NzMzRS87PBQCCbjuYLwAAAA==?targetTab=extra-products" target="_blank">Add Baggage</a>
+    <a class="link-btn" href="https://wizzair.com/en-gb/check-in" target="_blank">Wizz Check-in</a>
+    <a class="link-btn secondary" href="https://il.flightnetwork.com/order-load-ref/H4sIAAAAAAAA_7ON043XjYsHk7aGJpYmZiYGRhamNUAQ7OHo4-oLFDNySM9NzMzRS87PBQCCbjuYLwAAAA==?show-fare-rules=true&source=ibe-email&targetTab=travel-information" target="_blank">Fare Rules</a>
+    <a class="link-btn secondary" href="https://il.flightnetwork.com/order-status-ref/H4sIAAAAAAAA_7ON043XjYsHk7aGJpYmZiYGRhamNUAQ7OHo4-oLFDNySM9NzMzRS87PBQCCbjuYLwAAAA==" target="_blank">Order Status</a>
+    <a class="link-btn secondary" href="https://wizzair.com/en-gb/help-centre/booking-information-and-services/baggage" target="_blank">Wizz Baggage Info</a>
+    <a class="link-btn secondary" href="https://il.flightnetwork.com/rf/contact-us" target="_blank">Contact Support</a>
+  </div>
+</div>
+
+<p style="text-align:center; color:#aaa; font-size:0.75em; margin: 16px 0;">Generated from Gmail booking &middot; Order 1106-762-326</p>
+
+</body>
+</html>
