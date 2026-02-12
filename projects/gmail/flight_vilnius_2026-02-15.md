@@ -10,38 +10,39 @@
 
 ### Outbound
 - **Route:** Tel Aviv (TLV) → Vilnius (VNO)
+- **Flight:** W61962
 - **Date:** Sunday 15 February 2026
 - **Time:** 11:05 → 15:35 (4h 30min)
 
 ### Return
 - **Route:** Vilnius (VNO) → Tel Aviv (TLV)
+- **Flight:** W61965
 - **Date:** Wednesday 18 February 2026
 - **Time:** 06:00 → 10:10 (4h 10min)
 
 ## Passengers (4)
-| Name | Age Group | Gender |
-|------|-----------|--------|
-| Zvi Bezalel Shalem | Adult | Mr |
-| Michal Zivony Shalem | Adult | Mrs/Ms |
-| Yaara Shalem | Child | Girl |
-| Naomi Devash Shalem | Child | Girl |
+| Name | Age Group | Checked Bag |
+|------|-----------|-------------|
+| Zvi Bezalel Shalem | Adult | 1 x 26kg each way ($266.76) |
+| Michal Zivony Shalem | Adult | None |
+| Yaara Shalem | Child | None |
+| Naomi Devash Shalem | Child | None |
 
-## Baggage Allowance (Wizz Air)
+All passengers get a free personal bag (40 x 30 x 20 cm).
 
-### Free — Personal Bag (included with ticket)
-- **Size:** 40 x 30 x 20 cm
-- **Weight:** max 10 kg
-- Must fit under the seat in front of you
+## Baggage Summary
 
-### Cabin Bag (requires WIZZ Priority purchase)
-- **Size:** 55 x 40 x 23 cm
-- **Weight:** max 10 kg
-- Wheels may add up to 5 cm extra
+### What's included per passenger
+- **Personal bag (FREE):** 40 x 30 x 20 cm, max 10 kg — fits under seat
 
-### Checked Bag (must be purchased separately)
-- **Max dimensions:** 149 cm total (length + width + height combined)
-- **Weight options:** 10 kg / 20 kg / 26 kg / 32 kg
-- Up to 6 pieces per passenger
+### What was purchased
+- **Zvi only — Checked bag:** 1 x 26kg on each leg (TLV→VNO + VNO→TLV)
+- **Max checked bag size:** 149 cm total (L+W+H)
+- **Cost:** $266.76
+
+### Not purchased (available to add)
+- **Cabin trolley bag:** 55 x 40 x 23 cm, max 10 kg — requires WIZZ Priority
+- **Checked bags for Michal, Yaara, Naomi** — can add via "My Bookings"
 
 ## Quick Links
 
