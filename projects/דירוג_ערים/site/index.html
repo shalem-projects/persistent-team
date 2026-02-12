@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>דירוג ערים — ציון משולב</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: #0a0a0a;
+            color: #e0e0e0;
+            padding: 20px;
+            direction: rtl;
+        }
+        h1 {
+            text-align: center;
+            margin: 20px 0 5px;
+            font-size: 1.8em;
+            color: #fff;
+        }
+        .subtitle {
+            text-align: center;
+            color: #888;
+            margin-bottom: 30px;
+            font-size: 0.95em;
+        }
+        .method-box {
+            background: #1a1a2e;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 0 auto 30px;
+            max-width: 900px;
+        }
+        .method-box h3 {
+            color: #7eb8da;
+            margin-bottom: 10px;
+        }
+        .method-box ul {
+            list-style: none;
+            padding: 0;
+        }
+        .method-box li {
+            padding: 4px 0;
+            color: #bbb;
+        }
+        .method-box li strong {
+            color: #e0e0e0;
+        }
+        .weight {
+            display: inline-block;
+            background: #2a2a4a;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            color: #7eb8da;
+            margin-left: 8px;
+        }
+        table {
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto 40px;
+            border-collapse: collapse;
+        }
+        th {
+            background: #1a1a2e;
+            color: #7eb8da;
+            padding: 12px 8px;
+            text-align: center;
+            font-weight: 600;
+            border-bottom: 2px solid #333;
+            font-size: 0.85em;
+        }
+        td {
+            padding: 10px 8px;
+            text-align: center;
+            border-bottom: 1px solid #222;
+        }
+        tr:hover { background: #1a1a1a; }
+        .city { text-align: right; font-weight: 600; }
+        .rank { font-size: 1.2em; color: #7eb8da; }
+        .score { font-size: 1.1em; }
+        .dim { color: #666; font-size: 0.85em; }
+        .partial td { opacity: 0.5; }
+        .section-title {
+            text-align: center;
+            color: #666;
+            font-size: 0.9em;
+            padding: 15px 0 5px;
+            border-top: 1px solid #333;
+        }
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 10px 0 25px;
+            font-size: 0.85em;
+        }
+        .legend span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .dot {
+            width: 12px; height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .links {
+            text-align: center;
+            margin: 30px 0;
+        }
+        .links a {
+            color: #7eb8da;
+            text-decoration: none;
+            margin: 0 15px;
+        }
+        .links a:hover { text-decoration: underline; }
+        footer {
+            text-align: center;
+            color: #555;
+            font-size: 0.8em;
+            margin-top: 40px;
+            padding: 20px 0;
+            border-top: 1px solid #222;
+        }
+        @media (max-width: 768px) {
+            body { padding: 10px; }
+            th, td { padding: 6px 4px; font-size: 0.8em; }
+            h1 { font-size: 1.3em; }
+        }
+    </style>
+</head>
+<body>
+    <h1>דירוג ערים — ציון משולב</h1>
+    <p class="subtitle">שילוב ניתוח פרוטוקולים עירוניים + חשיפה לתוכניות חינוך</p>
+
+    <div class="method-box">
+        <h3>מתודולוגיה</h3>
+        <ul>
+            <li><strong>ציון משולב</strong> = שקלול של שלושה מקורות מידע:</li>
+            <li>• חשיפה חינוכית (תוכניות גפ"ן) <span class="weight">50%</span></li>
+            <li>• אותות פרוגרסיביים בפרוטוקולים (Pole B) <span class="weight">30%</span></li>
+            <li>• דגלים אדומים — שיתוף UNESCO, יועצים חיצוניים <span class="weight">20%</span></li>
+            <li class="dim" style="margin-top:8px">Pole A (זהות יהודית/ציונית) מוצג לייחוס אך לא נכלל בציון המשולב</li>
+        </ul>
+    </div>
+
+    <div class="legend">
+        <span><span class="dot" style="background:#ff4444"></span> 50+ קריטי</span>
+        <span><span class="dot" style="background:#ff8800"></span> 30-49 גבוה</span>
+        <span><span class="dot" style="background:#ffcc00"></span> 15-29 בינוני</span>
+        <span><span class="dot" style="background:#44cc44"></span> &lt;15 נמוך</span>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>עיר</th>
+                <th>ציון משולב</th>
+                <th>חשיפה חינוכית</th>
+                <th>% תקציב חתרני</th>
+                <th>Pole B</th>
+                <th>דגלים אדומים</th>
+                <th>Pole A (זהות)</th>
+                <th>כיסוי פרוטוקולים</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+        <tr>
+            <td class="rank">1</td>
+            <td class="city">כרמיאל</td>
+            <td class="score" style="color:#ff8800;font-weight:bold">48.7</td>
+            <td>75.14%</td>
+            <td>22.06%</td>
+            <td>0.58</td>
+            <td>0.04</td>
+            <td>4.29</td>
+            <td class="dim">49/162</td>
+        </tr>
+        <tr>
+            <td class="rank">2</td>
+            <td class="city">גבעתיים</td>
+            <td class="score" style="color:#ff8800;font-weight:bold">44.14</td>
+            <td>32.62%</td>
+            <td>8.84%</td>
+            <td>2.25</td>
+            <td>0.04</td>
+            <td>5.88</td>
+            <td class="dim">76/668</td>
+        </tr>
+        <tr>
+            <td class="rank">3</td>
+            <td class="city">באר שבע</td>
+            <td class="score" style="color:#ff8800;font-weight:bold">34.49</td>
+            <td>30.19%</td>
+            <td>6.37%</td>
+            <td>0.34</td>
+            <td>0.12</td>
+            <td>6.52</td>
+            <td class="dim">97/1027</td>
+        </tr>
+        <tr>
+            <td class="rank">4</td>
+            <td class="city">הוד השרון</td>
+            <td class="score" style="color:#ff8800;font-weight:bold">32.81</td>
+            <td>30.03%</td>
+            <td>9.53%</td>
+            <td>0.58</td>
+            <td>0.09</td>
+            <td>9.43</td>
+            <td class="dim">43/715</td>
+        </tr>
+        <tr>
+            <td class="rank">5</td>
+            <td class="city">רעננה</td>
+            <td class="score" style="color:#ffcc00;font-weight:bold">26.42</td>
+            <td>34.9%</td>
+            <td>9.91%</td>
+            <td>0.63</td>
+            <td>0.02</td>
+            <td>3.02</td>
+            <td class="dim">82/968</td>
+        </tr>
+        <tr>
+            <td class="rank">6</td>
+            <td class="city">הרצליה</td>
+            <td class="score" style="color:#ffcc00;font-weight:bold">26.13</td>
+            <td>29.13%</td>
+            <td>8.83%</td>
+            <td>0.89</td>
+            <td>0.02</td>
+            <td>5.72</td>
+            <td class="dim">66/1813</td>
+        </tr>
+        <tr>
+            <td class="rank">7</td>
+            <td class="city">חיפה</td>
+            <td class="score" style="color:#ffcc00;font-weight:bold">24.79</td>
+            <td>38.12%</td>
+            <td>10.96%</td>
+            <td>0.44</td>
+            <td>0.01</td>
+            <td>4.06</td>
+            <td class="dim">93/1215</td>
+        </tr>
+        <tr>
+            <td class="rank">8</td>
+            <td class="city">גבעת שמואל</td>
+            <td class="score" style="color:#ffcc00;font-weight:bold">19.45</td>
+            <td>37.49%</td>
+            <td>9.73%</td>
+            <td>0.07</td>
+            <td>0.0</td>
+            <td>4.74</td>
+            <td class="dim">68/392</td>
+        </tr>
+        <tr>
+            <td class="rank">9</td>
+            <td class="city">אריאל</td>
+            <td class="score" style="color:#ffcc00;font-weight:bold">17.15</td>
+            <td>26.56%</td>
+            <td>10.83%</td>
+            <td>0.12</td>
+            <td>0.02</td>
+            <td>5.27</td>
+            <td class="dim">69/196</td>
+        </tr>
+        <tr>
+            <td class="rank">10</td>
+            <td class="city">קרית אונו</td>
+            <td class="score" style="color:#ffcc00;font-weight:bold">16.44</td>
+            <td>30.48%</td>
+            <td>8.65%</td>
+            <td>0.12</td>
+            <td>0.0</td>
+            <td>3.92</td>
+            <td class="dim">67/233</td>
+        </tr>
+        <tr>
+            <td class="rank">11</td>
+            <td class="city">ראש העין</td>
+            <td class="score" style="color:#44cc44;font-weight:bold">14.73</td>
+            <td>24.27%</td>
+            <td>7.14%</td>
+            <td>0.26</td>
+            <td>0.0</td>
+            <td>3.92</td>
+            <td class="dim">100/457</td>
+        </tr>
+        <tr>
+            <td class="rank">12</td>
+            <td class="city">קרית גת</td>
+            <td class="score" style="color:#44cc44;font-weight:bold">13.91</td>
+            <td>27.63%</td>
+            <td>7.12%</td>
+            <td>0.01</td>
+            <td>0.0</td>
+            <td>0.61</td>
+            <td class="dim">17/222</td>
+        </tr>
+        <tr>
+            <td class="rank">13</td>
+            <td class="city">אפרת</td>
+            <td class="score" style="color:#44cc44;font-weight:bold">6.3</td>
+            <td>3.46%</td>
+            <td>0.0%</td>
+            <td>0.19</td>
+            <td>0.02</td>
+            <td>4.09</td>
+            <td class="dim">93/252</td>
+        </tr>
+        <tr>
+            <td class="rank">14</td>
+            <td class="city">עמנואל</td>
+            <td class="score" style="color:#44cc44;font-weight:bold">3.71</td>
+            <td>1.22%</td>
+            <td>0.0%</td>
+            <td>0.31</td>
+            <td>0.0</td>
+            <td>2.62</td>
+            <td class="dim">50/155</td>
+        </tr>
+        <tr>
+            <td class="rank">15</td>
+            <td class="city">נתיבות</td>
+            <td class="score" style="color:#44cc44;font-weight:bold">2.83</td>
+            <td>3.25%</td>
+            <td>0.99%</td>
+            <td>0.12</td>
+            <td>0.0</td>
+            <td>3.39</td>
+            <td class="dim">44/300</td>
+        </tr>
+            <tr><td colspan="9" class="section-title">ערים עם מקור נתונים חלקי</td></tr>
+            
+        <tr class="partial">
+            <td>—</td>
+            <td class="city">ירושלים</td>
+            <td class="dim">חינוך בלבד</td>
+            <td>22.07%</td>
+            <td>5.9%</td>
+            <td>—</td>
+            <td>—</td>
+            <td>—</td>
+            <td>—</td>
+        </tr>
+        <tr class="partial">
+            <td>—</td>
+            <td class="city">קרית שמונה</td>
+            <td class="dim">חינוך בלבד</td>
+            <td>41.65%</td>
+            <td>10.72%</td>
+            <td>—</td>
+            <td>—</td>
+            <td>—</td>
+            <td>—</td>
+        </tr>
+        <tr class="partial">
+            <td>—</td>
+            <td class="city">רמת גן</td>
+            <td class="dim">חינוך בלבד</td>
+            <td>37.73%</td>
+            <td>11.47%</td>
+            <td>—</td>
+            <td>—</td>
+            <td>—</td>
+            <td>—</td>
+        </tr>
+        <tr class="partial">
+            <td>—</td>
+            <td class="city">רמת השרון</td>
+            <td class="dim">חינוך בלבד</td>
+            <td>60.33%</td>
+            <td>18.16%</td>
+            <td>—</td>
+            <td>—</td>
+            <td>—</td>
+            <td>—</td>
+        </tr>
+        <tr class="partial">
+            <td>—</td>
+            <td class="city">תל אביב-יפו</td>
+            <td class="dim">חינוך בלבד</td>
+            <td>52.75%</td>
+            <td>15.52%</td>
+            <td>—</td>
+            <td>—</td>
+            <td>—</td>
+            <td>—</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="links">
+        <a href="merged_city_ranking.json" download>⬇ הורד JSON מלא</a>
+        <a href="https://aosshalem-dev.github.io/educational-programs/">📊 ניתוח תוכניות חינוך</a>
+    </div>
+
+    <footer>
+        נוצר: 2026-02-12 | פרויקט אלכסון — דירוג ערים<br>
+        מקורות: ניתוח פרוטוקולים עירוניים (15 ערים) + ניתוח תוכניות גפ"ן (6,064 תוכניות, 20 ערים)
+    </footer>
+</body>
+</html>
