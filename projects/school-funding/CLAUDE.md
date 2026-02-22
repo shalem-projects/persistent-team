@@ -1,13 +1,22 @@
 # School Funding Monitor
 
 ## What it is
-Local web UI that scrapes MitRat (מית"ר) financial data for school symbol 144097 and displays it. MitRat is the Ministry of Education's budgeting system at `apps.education.gov.il/mtrnet/`.
+Scrapes MitRat (מית"ר) financial data for school symbol 144097, generates a static HTML page, and uploads it to yisumatica via FTP. Run locally ~once a week.
+
+Live page: https://www.yisumatica.org.il/school-funding/
 
 ## Architecture
-- Single-file Python server (`server.py`) on port 8300
+- Single Python file (`server.py`) — scraper + HTML generator + FTP uploader
 - Playwright headless Chromium for scraping
-- stdlib `http.server` for the web UI (same pattern as `context_ui.py`)
-- `data.json` for persisting scraped data between restarts
+- Output: `data.json` (raw data) + `index.html` (static page)
+- FTP to `yisumatica.org.il/school-funding/`
+
+## Usage
+```bash
+python -B server.py                # scrape + generate + FTP upload
+python -B server.py --scrape-only  # scrape + generate, no upload
+python -B server.py --serve        # local preview at localhost:8300
+```
 
 ## Scraper flow
 1. Navigate to `https://apps.education.gov.il/mtrnet/home.aspx`
@@ -17,19 +26,8 @@ Local web UI that scrapes MitRat (מית"ר) financial data for school symbol 14
 5. Click matching institution row in results
 6. Navigate to available reports (payment summary, allocations)
 7. Extract table data, save to `data.json`
-
-## API endpoints
-| Method | Path | Purpose |
-|--------|------|---------|
-| GET | `/` | Serve HTML UI |
-| GET | `/api/data` | Return current scraped data |
-| POST | `/api/refresh` | Trigger scraper, return updated data |
-
-## Running
-```bash
-python -B projects/school-funding/server.py
-# Open http://localhost:8300
-```
+8. Generate static `index.html`
+9. Upload both files via FTP
 
 ## Key constraints
 - MitRat is a legacy ASP.NET WebForms app — lots of postbacks and ViewState

@@ -3,19 +3,25 @@
   "type": "tool",
   "category": "Work",
   "location": "Dropbox/persistent-team/projects/school-funding",
-  "stack": "Python (stdlib http.server + Playwright)",
+  "stack": "Python (Playwright + stdlib http.server)",
   "key_files": ["server.py"],
-  "url": "http://localhost:8300",
-  "description": "Scrapes MitRat (מית\"ר) funding data for school 144097 and displays it in a local web UI",
+  "deploy": {
+    "method": "FTP via curl",
+    "server": "109.207.77.32",
+    "path": "/public_html/school-funding/",
+    "url": "https://www.yisumatica.org.il/school-funding/"
+  },
+  "description": "Scrapes MitRat (מית\"ר) funding data for school 144097, generates static HTML, uploads to yisumatica",
   "features": [
     "Playwright headless scraper for MitRat ASP.NET WebForms",
-    "Financial data tables (payments, allocations)",
-    "Refresh button with loading spinner",
-    "RTL Hebrew layout",
-    "JSON persistence between restarts"
+    "Text-based table parser (fallback for non-standard GridView rendering)",
+    "Static HTML generation with RTL Hebrew layout",
+    "FTP upload to yisumatica",
+    "Local preview server (--serve)"
   ],
   "known_issues": [
     "Must use python -B to avoid pyc caching",
-    "Scraping takes 10-20 seconds due to ASP.NET postbacks"
+    "ASP.NET postback timing is inconsistent — sometimes needs a retry",
+    "MitRat may return different table counts on different runs"
   ]
 }
