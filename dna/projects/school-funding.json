@@ -1,0 +1,21 @@
+{
+  "project_id": "school-funding",
+  "type": "tool",
+  "category": "Work",
+  "location": "Dropbox/persistent-team/projects/school-funding",
+  "stack": "Python (stdlib http.server + Playwright)",
+  "key_files": ["server.py"],
+  "url": "http://localhost:8300",
+  "description": "Scrapes MitRat (מית\"ר) funding data for school 144097 and displays it in a local web UI",
+  "features": [
+    "Playwright headless scraper for MitRat ASP.NET WebForms",
+    "Financial data tables (payments, allocations)",
+    "Refresh button with loading spinner",
+    "RTL Hebrew layout",
+    "JSON persistence between restarts"
+  ],
+  "known_issues": [
+    "Must use python -B to avoid pyc caching",
+    "Scraping takes 10-20 seconds due to ASP.NET postbacks"
+  ]
+}
