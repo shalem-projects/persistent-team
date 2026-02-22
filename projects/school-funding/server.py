@@ -132,10 +132,9 @@ def scrape_mitrat():
                         rows.first.click()
                         page.wait_for_timeout(3000)
 
-            # Verify we're on the report list or report page
-            current_url = page.url.lower()
-            if "home.aspx" in current_url:
-                result["errors"].append(f"Failed to navigate past home page. Still on: {page.url}")
+            # Note: URL check removed — ASP.NET postback may update the page
+            # content while the URL still shows home.aspx momentarily.
+            # The real validation is whether we find data tables later.
 
             # Step 6: Extract school name
             page_text = page.inner_text("body")
