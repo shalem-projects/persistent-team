@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>משחק הצוללת</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: #fff;
+  color: #222;
+  user-select: none;
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 0.7rem;
+  letter-spacing: 2px;
+}
+
+/* Button rows */
+.btn-row {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.6rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-row .separator {
+  color: #ccc;
+  font-size: 1.2rem;
+  margin: 0 0.2rem;
+}
+
+#value-row {
+  display: inline-flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.btn-row label {
+  font-size: 0.95rem;
+  color: #555;
+  margin-left: 0.4rem;
+}
+
+.mode-btn, .value-btn, .size-btn {
+  font-size: 1rem;
+  padding: 0.4rem 1.1rem;
+  border: 2px solid #bbb;
+  border-radius: 8px;
+  background: #f5f5f5;
+  color: #444;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.15s;
+}
+
+.mode-btn:hover, .value-btn:hover, .size-btn:hover {
+  background: #e8e8e8;
+  border-color: #999;
+}
+
+.mode-btn.active, .size-btn.active {
+  background: #444;
+  color: #fff;
+  border-color: #444;
+}
+
+.value-btn:hover {
+  transform: scale(1.08);
+}
+
+.value-btn.active {
+  background: #2a9d8f;
+  color: #fff;
+  border-color: #2a9d8f;
+}
+
+#show-dims-toggle {
+  font-size: 0.85rem;
+  padding: 0.3rem 0.8rem;
+  border: 1px solid #bbb;
+  border-radius: 6px;
+  background: #f5f5f5;
+  color: #666;
+  cursor: pointer;
+  margin-right: 0.5rem;
+}
+
+#show-dims-toggle.on {
+  background: #ddd;
+  border-color: #888;
+  color: #333;
+}
+
+#turn-indicator {
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding: 0.4rem 2rem;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  transition: background 0.3s;
+}
+
+#mode-display {
+  font-size: 0.95rem;
+  color: #666;
+  margin-bottom: 0.8rem;
+  min-height: 1.3em;
+}
+
+#turn-indicator.blue { background: #4488ff; color: #fff; }
+#turn-indicator.red { background: #ff4444; color: #fff; }
+#turn-indicator.guessing { background: #f4a261; color: #fff; }
+
+#grid {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  grid-template-rows: repeat(9, 1fr);
+  gap: 3px;
+  width: min(90vw, 480px);
+  height: min(90vw, 480px);
+  background: #333;
+  padding: 3px;
+  border-radius: 8px;
+}
+
+.cell {
+  background: #aaa;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(0.65rem, 2.5vw, 0.85rem);
+  font-weight: bold;
+  color: #555;
+}
+
+.cell:hover:not(.revealed) {
+  background: #bbb;
+  transform: scale(1.05);
+  z-index: 1;
+}
+
+.cell.revealed.blue { background: #4488ff; cursor: default; color: rgba(255,255,255,0.7); }
+.cell.revealed.red { background: #ff4444; cursor: default; color: rgba(255,255,255,0.7); }
+.cell.revealed.empty { background: #e0e0e0; cursor: default; color: #bbb; }
+.cell.revealed.wrong { background: #222; cursor: default; color: #e63946; }
+.cell.ghost-blue { background: rgba(68, 136, 255, 0.3); cursor: default; }
+.cell.ghost-red { background: rgba(255, 68, 68, 0.3); cursor: default; }
+
+.cell.win-cell {
+  animation: pulse 0.6s ease-in-out infinite alternate;
+}
+
+@keyframes pulse {
+  from { filter: brightness(1); }
+  to { filter: brightness(1.4); }
+}
+
+
+button {
+  font-size: 1.1rem;
+  padding: 0.5rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+
+#know-btn { background: #f4a261; color: #fff; display: none; }
+#know-btn:hover { background: #e08a3a; }
+#know-btn:disabled { background: #ccc; color: #999; cursor: default; }
+
+</style>
+</head>
+<body>
+
+<h1>משחק הצוללת</h1>
+
+<div class="btn-row" id="top-row">
+  <button class="mode-btn active" data-mode="area">שטח</button>
+  <button class="mode-btn" data-mode="perimeter">היקף</button>
+  <button class="mode-btn" data-mode="symmetry">סימטריה</button>
+  <span class="separator">|</span>
+  <span id="value-row"></span>
+  <button id="show-dims-toggle">הצג אפשרויות</button>
+  <button id="know-btn">אני יודע את הצורה!</button>
+  <span class="separator">|</span>
+  <label>לוח:</label>
+  <button class="size-btn" data-size="7">7</button>
+  <button class="size-btn" data-size="8">8</button>
+  <button class="size-btn active" data-size="9">9</button>
+</div>
+
+<div id="turn-indicator" class="blue">תור כחול</div>
+<div id="mode-display"></div>
+<div id="grid"></div>
+
+<script>
+let GRID_SIZE = 9;
+
+// ==================== Rectangle helpers ====================
+
+function getDimsForPerimeter(p) {
+  const half = p / 2;
+  const dims = [];
+  for (let w = 1; w <= Math.min(half - 1, GRID_SIZE); w++) {
+    const h = half - w;
+    if (h >= 1 && h <= GRID_SIZE) dims.push([w, h]);
+  }
+  return dims;
+}
+
+function getDimsForArea(a) {
+  const dims = [];
+  for (let w = 1; w <= GRID_SIZE; w++) {
+    if (a % w === 0) {
+      const h = a / w;
+      if (h >= 1 && h <= GRID_SIZE) dims.push([w, h]);
+    }
+  }
+  return dims;
+}
+
+function canFitTwo(dims) {
+  return dims.some(([w, h]) => 2 * w <= GRID_SIZE || 2 * h <= GRID_SIZE);
+}
+
+function getValidPerimeters() {
+  return [8, 10, 12, 14, 16].filter(p => canFitTwo(getDimsForPerimeter(p)));
+}
+
+function getValidAreas() {
+  return [6, 8, 10, 12, 14, 16, 18].filter(a => canFitTwo(getDimsForArea(a)));
+}
+
+function getValidSymAreas() { return [5, 6, 7, 8, 9]; }
+
+function pickRect(dims) {
+  const [w, h] = dims[randInt(dims.length)];
+  return { r: randInt(GRID_SIZE - h + 1), c: randInt(GRID_SIZE - w + 1), w, h };
+}
+
+function rectOverlaps(a, b) {
+  return !(a.c + a.w <= b.c || b.c + b.w <= a.c || a.r + a.h <= b.r || b.r + b.h <= a.r);
+}
+
+function rectToCells(rect) {
+  const cells = new Set();
+  for (let r = rect.r; r < rect.r + rect.h; r++)
+    for (let c = rect.c; c < rect.c + rect.w; c++)
+      cells.add(K(r, c));
+  return cells;
+}
+
+// ==================== Symmetry shape generator ====================
+
+const K = (r, c) => `${r},${c}`;
+const P = k => k.split(',').map(Number);
+
+function generateSymShape(targetArea) {
+  const betweenCells = (targetArea % 2 === 0) && (Math.random() < 0.5);
+  const dirs = [[0,1],[0,-1],[1,0],[-1,0]];
+  const cells = new Set();
+  let count = 0;
+
+  if (betweenCells) {
+    cells.add(K(0, 0)); cells.add(K(-1, 0));
+    count = 2;
+    while (count < targetArea) {
+      if (targetArea - count < 2) break;
+      const seen = new Set(), frontier = [];
+      for (const k of cells) {
+        const [x, y] = P(k);
+        if (x < 0) continue;
+        for (const [dx, dy] of dirs) {
+          const nx = x + dx, ny = y + dy;
+          if (nx < 0) continue;
+          const nk = K(nx, ny);
+          if (cells.has(nk) || seen.has(nk)) continue;
+          seen.add(nk);
+          frontier.push({ x: nx, y: ny });
+        }
+      }
+      if (frontier.length === 0) break;
+      const pick = frontier[randInt(frontier.length)];
+      cells.add(K(pick.x, pick.y));
+      cells.add(K(-1 - pick.x, pick.y));
+      count += 2;
+    }
+  } else {
+    cells.add(K(0, 0));
+    count = 1;
+    while (count < targetArea) {
+      const remaining = targetArea - count;
+      const seen = new Set(), frontier = [];
+      for (const k of cells) {
+        const [x, y] = P(k);
+        if (x < 0) continue;
+        for (const [dx, dy] of dirs) {
+          const nx = x + dx, ny = y + dy;
+          if (nx < 0) continue;
+          const nk = K(nx, ny);
+          if (cells.has(nk) || seen.has(nk)) continue;
+          seen.add(nk);
+          const cost = nx === 0 ? 1 : 2;
+          if (cost <= remaining) frontier.push({ x: nx, y: ny, cost, onAxis: nx === 0 });
+        }
+      }
+      if (frontier.length === 0) break;
+      const pick = frontier[randInt(frontier.length)];
+      cells.add(K(pick.x, pick.y));
+      if (!pick.onAxis) cells.add(K(-pick.x, pick.y));
+      count += pick.cost;
+    }
+  }
+
+  if (count !== targetArea) return null;
+
+  const rot = randInt(4);
+  const rotated = new Set();
+  for (const k of cells) {
+    const [x, y] = P(k);
+    let rx, ry;
+    switch (rot) {
+      case 0: rx = x;  ry = y;  break;
+      case 1: rx = -y; ry = x;  break;
+      case 2: rx = -x; ry = -y; break;
+      case 3: rx = y;  ry = -x; break;
+    }
+    rotated.add(K(rx, ry));
+  }
+
+  let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+  for (const k of rotated) {
+    const [x, y] = P(k);
+    minX = Math.min(minX, x); maxX = Math.max(maxX, x);
+    minY = Math.min(minY, y); maxY = Math.max(maxY, y);
+  }
+  const shapeW = maxX - minX + 1, shapeH = maxY - minY + 1;
+  if (shapeW > GRID_SIZE || shapeH > GRID_SIZE) return null;
+
+  const offCol = randInt(GRID_SIZE - shapeW + 1);
+  const offRow = randInt(GRID_SIZE - shapeH + 1);
+
+  const gridCells = new Set();
+  for (const k of rotated) {
+    const [x, y] = P(k);
+    gridCells.add(K(y - minY + offRow, x - minX + offCol));
+  }
+
+  return gridCells;
+}
+
+function setsOverlap(a, b) {
+  for (const k of a) if (b.has(k)) return true;
+  return false;
+}
+
+// ==================== Game state ====================
+
+let board, revealed, currentTurn, gameOver, guessing;
+let blueCells, redCells;
+let currentMode = 'area';
+let currentValue = 10;
+let currentDims = [];
+let showDims = false;
+
+const gridEl = document.getElementById('grid');
+const turnEl = document.getElementById('turn-indicator');
+const modeDisplayEl = document.getElementById('mode-display');
+const valueRowEl = document.getElementById('value-row');
+const dimsToggle = document.getElementById('show-dims-toggle');
+const knowBtn = document.getElementById('know-btn');
+
+function randInt(max) { return Math.floor(Math.random() * max); }
+
+// ==================== UI: button rows ====================
+
+function getValuesForMode(mode) {
+  if (mode === 'perimeter') return getValidPerimeters();
+  if (mode === 'area') return getValidAreas();
+  return getValidSymAreas();
+}
+
+function renderModeButtons() {
+  document.querySelectorAll('.mode-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.mode === currentMode);
+  });
+}
+
+function renderValueButtons() {
+  const values = getValuesForMode(currentMode);
+  valueRowEl.innerHTML = '';
+
+  const label = document.createElement('label');
+  label.textContent = currentMode === 'perimeter' ? 'היקף:' : 'שטח:';
+  valueRowEl.appendChild(label);
+
+  values.forEach(v => {
+    const btn = document.createElement('button');
+    btn.className = 'value-btn';
+    btn.textContent = v;
+    btn.classList.toggle('active', v === currentValue);
+    btn.addEventListener('click', () => {
+      currentValue = v;
+      initGame();
+      renderValueButtons();
+    });
+    valueRowEl.appendChild(btn);
+  });
+}
+
+function updateUI() {
+  renderModeButtons();
+  renderValueButtons();
+  knowBtn.style.display = currentMode === 'symmetry' ? 'inline-block' : 'none';
+  dimsToggle.classList.toggle('on', showDims);
+}
+
+// ==================== Mode display ====================
+
+function updateDims() {
+  if (currentMode === 'symmetry') {
+    currentDims = [];
+  } else {
+    currentDims = currentMode === 'perimeter'
+      ? getDimsForPerimeter(currentValue)
+      : getDimsForArea(currentValue);
+  }
+}
+
+function updateModeDisplay() {
+  if (currentMode === 'symmetry') {
+    let text = 'שטח = ' + currentValue + '  |  צורה סימטרית';
+    if (showDims) text += '  |  ציר סימטריה: אנכי או אופקי';
+    modeDisplayEl.textContent = text;
+    return;
+  }
+  const modeHeb = currentMode === 'perimeter' ? 'היקף' : 'שטח';
+  if (showDims && currentDims.length > 0) {
+    const dimsStr = currentDims.map(([w,h]) => w + '×' + h).join(' , ');
+    modeDisplayEl.textContent = modeHeb + ' = ' + currentValue + '  |  מלבנים אפשריים: ' + dimsStr;
+  } else {
+    modeDisplayEl.textContent = modeHeb + ' = ' + currentValue;
+  }
+}
+
+// ==================== Game init ====================
+
+function initGame() {
+  updateDims();
+  updateModeDisplay();
+  updateUI();
+
+  board = Array.from({ length: GRID_SIZE }, () => Array(GRID_SIZE).fill('empty'));
+  revealed = Array.from({ length: GRID_SIZE }, () => Array(GRID_SIZE).fill(false));
+
+  if (currentMode === 'symmetry') {
+    blueCells = null;
+    for (let i = 0; i < 50; i++) {
+      const s = generateSymShape(currentValue);
+      if (s && s.size === currentValue) { blueCells = s; break; }
+    }
+    redCells = null;
+    if (blueCells) {
+      for (let i = 0; i < 200; i++) {
+        const s = generateSymShape(currentValue);
+        if (s && s.size === currentValue && !setsOverlap(blueCells, s)) { redCells = s; break; }
+      }
+    }
+    if (!blueCells || !redCells) {
+      modeDisplayEl.textContent = 'לא הצלחתי ליצור שתי צורות. נסה שטח קטן יותר.';
+      return;
+    }
+  } else {
+    const blueRect = pickRect(currentDims);
+    let redRect, attempts = 0;
+    do { redRect = pickRect(currentDims); attempts++; }
+    while (rectOverlaps(blueRect, redRect) && attempts < 1000);
+    blueCells = rectToCells(blueRect);
+    redCells = rectToCells(redRect);
+  }
+
+  for (const k of blueCells) { const [r, c] = P(k); board[r][c] = 'blue'; }
+  for (const k of redCells) { const [r, c] = P(k); board[r][c] = 'red'; }
+
+  currentTurn = 'blue';
+  gameOver = false;
+  guessing = false;
+  knowBtn.disabled = false;
+
+  renderGrid();
+  updateTurnIndicator();
+}
+
+// ==================== Rendering ====================
+
+function renderGrid() {
+  gridEl.style.gridTemplateColumns = `repeat(${GRID_SIZE}, 1fr)`;
+  gridEl.style.gridTemplateRows = `repeat(${GRID_SIZE}, 1fr)`;
+  gridEl.innerHTML = '';
+  let num = 1;
+  for (let r = 0; r < GRID_SIZE; r++) {
+    for (let c = 0; c < GRID_SIZE; c++) {
+      const cell = document.createElement('div');
+      cell.className = 'cell';
+      cell.textContent = num;
+      if (revealed[r][c]) {
+        cell.classList.add('revealed', board[r][c]);
+        cell.textContent = '';
+      }
+      cell.addEventListener('click', () => handleClick(r, c));
+      gridEl.appendChild(cell);
+      num++;
+    }
+  }
+}
+
+function getCellEl(r, c) { return gridEl.children[r * GRID_SIZE + c]; }
+
+function updateTurnIndicator() {
+  if (gameOver) return;
+  if (guessing) {
+    turnEl.className = 'guessing';
+    const name = currentTurn === 'blue' ? 'כחול' : 'אדום';
+    turnEl.textContent = name + ' מסמן את הצורה — טעות אחת ונפסל!';
+    return;
+  }
+  turnEl.className = currentTurn;
+  turnEl.textContent = currentTurn === 'blue' ? 'תור כחול' : 'תור אדום';
+}
+
+
+// ==================== Game logic ====================
+
+function handleClick(r, c) {
+  if (gameOver || revealed[r][c]) return;
+
+  revealed[r][c] = true;
+  const cellEl = getCellEl(r, c);
+  const content = board[r][c];
+
+  if (guessing && content === 'empty') {
+    cellEl.classList.add('revealed', 'wrong');
+    cellEl.textContent = '✗';
+    gameOver = true;
+    const winner = currentTurn === 'blue' ? 'red' : 'blue';
+    revealAllShapes();
+    turnEl.className = winner;
+    turnEl.textContent = (winner === 'blue' ? 'כחול' : 'אדום') + ' ניצח!';
+    return;
+  }
+
+  cellEl.classList.add('revealed', content);
+  cellEl.textContent = '';
+
+  const winner = checkWin();
+  if (winner) {
+    gameOver = true;
+    highlightWinShape(winner);
+    revealAllShapes();
+    turnEl.className = winner;
+    turnEl.textContent = (winner === 'blue' ? 'כחול' : 'אדום') + ' ניצח!';
+    return;
+  }
+
+  if (guessing) return;
+
+  currentTurn = currentTurn === 'blue' ? 'red' : 'blue';
+  updateTurnIndicator();
+}
+
+function checkWin() {
+  let blueAll = true;
+  for (const k of blueCells) {
+    const [r, c] = P(k);
+    if (!revealed[r][c]) { blueAll = false; break; }
+  }
+  if (blueAll) return 'blue';
+
+  let redAll = true;
+  for (const k of redCells) {
+    const [r, c] = P(k);
+    if (!revealed[r][c]) { redAll = false; break; }
+  }
+  if (redAll) return 'red';
+
+  return null;
+}
+
+function highlightWinShape(winner) {
+  const cells = winner === 'blue' ? blueCells : redCells;
+  for (const k of cells) {
+    const [r, c] = P(k);
+    getCellEl(r, c).classList.add('win-cell');
+  }
+}
+
+function revealAllShapes() {
+  for (const k of blueCells) {
+    const [r, c] = P(k);
+    if (!revealed[r][c]) getCellEl(r, c).classList.add('ghost-blue');
+  }
+  for (const k of redCells) {
+    const [r, c] = P(k);
+    if (!revealed[r][c]) getCellEl(r, c).classList.add('ghost-red');
+  }
+}
+
+function enterGuessing() {
+  if (gameOver || guessing || currentMode !== 'symmetry') return;
+  guessing = true;
+  knowBtn.disabled = true;
+  updateTurnIndicator();
+}
+
+// ==================== Event listeners ====================
+
+document.querySelectorAll('.mode-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    currentMode = btn.dataset.mode;
+    const values = getValuesForMode(currentMode);
+    currentValue = values[Math.floor(values.length / 2)];
+    initGame();
+  });
+});
+
+dimsToggle.addEventListener('click', () => {
+  showDims = !showDims;
+  dimsToggle.classList.toggle('on', showDims);
+  updateModeDisplay();
+});
+
+knowBtn.addEventListener('click', enterGuessing);
+
+document.querySelectorAll('.size-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    GRID_SIZE = parseInt(btn.dataset.size);
+    document.querySelectorAll('.size-btn').forEach(b => b.classList.toggle('active', b === btn));
+    const values = getValuesForMode(currentMode);
+    if (!values.includes(currentValue)) currentValue = values[Math.floor(values.length / 2)];
+    initGame();
+  });
+});
+
+// Init
+initGame();
+</script>
+</body>
+</html>

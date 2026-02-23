@@ -1,0 +1,22 @@
+{
+  "project_id": "rectangles-game",
+  "aliases": ["rectangle game", "rectangles", "battleships game", "area game", "perimeter game"],
+  "tags": ["game", "rectangle", "area", "perimeter", "grid", "battleships", "math", "education"],
+  "type": "mini-app",
+  "category": "Education",
+  "location": "Dropbox/persistent-team/projects/rectangles-game",
+  "stack": "Single HTML file (vanilla JS, CSS Grid)",
+  "key_files": [
+    "rectangles-game.html"
+  ],
+  "url": "https://aosshalem-dev.github.io/rectangles-game/",
+  "description": "Two-player battleships-style board game for learning rectangle area and perimeter",
+  "features": [
+    "8x8 grid with numbered squares",
+    "Two hidden non-overlapping rectangles per game",
+    "Area mode and perimeter mode with configurable values",
+    "Toggle to show/hide possible rectangle dimensions",
+    "Blue vs Red turn-based gameplay with score tracking"
+  ],
+  "repo": "https://github.com/aosshalem-dev/rectangles-game"
+}

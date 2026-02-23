@@ -1,0 +1,26 @@
+{
+  "project_id": "research-tools",
+  "aliases": ["research tools", "deep research", "firecrawl", "web research"],
+  "tags": ["research", "gemini", "scraping", "firecrawl", "service", "mcp"],
+  "type": "internal-service",
+  "location": "Dropbox/persistent-team/projects/research-tools",
+  "description": "Centralized web research and scraping service. Other projects reference this instead of managing their own research tools.",
+  "mcp_servers": {
+    "deep-research": {
+      "purpose": "Deep web research via Gemini with Google Search grounding",
+      "config": "~/deep-research-mcp-server/.env.local",
+      "cost": "Free (Gemini API)"
+    },
+    "firecrawl": {
+      "purpose": "Structured web scraping, crawling, data extraction",
+      "cost": "500 free pages/month, then $16/mo for 3K",
+      "api_key_location": "Claude Code user config (~/.claude.json)"
+    }
+  },
+  "consumers": [
+    "דירוג_ערים",
+    "education",
+    "progressive_rosetta_stone",
+    "israel_science_academy"
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "project_id": "gmail",
+  "aliases": ["gmail", "email archive", "email categorization", "inbox"],
+  "tags": ["email", "gmail", "archive", "categorization", "sqlite", "rules", "sync"],
+  "type": "data-tool",
+  "location": "Dropbox/persistent-team/projects/gmail",
+  "stack": "Python + SQLite (gmail_archive.db)",
+  "account": "shalem1492@gmail.com (also aos.shalem@gmail.com)",
+  "db": "gmail_archive.db",
+  "main_scripts": {
+    "gmail_sync.py": "Sync emails from IMAP to SQLite",
+    "gmail_categorize.py": "Rule-based categorization + sender rules (111+ rules)",
+    "gmail_browse.py": "Browse/search the archive",
+    "gmail_report.py": "Generate reports on email stats",
+    "gmail_db.py": "DB utilities",
+    "gmail_reader.py": "Read individual emails"
+  },
+  "key_facts": {
+    "total_emails": "76,406+",
+    "categorization_rate": "98.1%",
+    "uncategorized_remaining": "~1,477 (true one-off senders)",
+    "no_api_calls": "User prefers free operations only — all enrichment is rule-based or via Claude Code sub-agents",
+    "sync_gap": "2022 has 0 emails — needs investigation",
+    "importance_levels": "0 (low), 1 (normal), 2 (high)"
+  },
+  "lessons": [
+    "run_rules() has limit=10000 — need multiple passes for large backlogs",
+    "Sender-domain rules are highest ROI — top 5 domains cover ~5,500 emails",
+    "Own addresses (shalem1492, yisumatica.info) need explicit rules ABOVE catch-all",
+    "--stats flag causes early return before run_rules() — don't combine with --rules-only",
+    "SQL column is date_parsed not date — check schema with PRAGMA table_info first",
+    "No Anthropic API calls — costs money beyond subscription"
+  ],
+  "services": ["db-tools"]
+}

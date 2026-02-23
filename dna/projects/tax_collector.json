@@ -1,0 +1,18 @@
+{
+  "project_id": "tax_collector",
+  "aliases": ["tax collector", "tax game", "גובה מיסים", "divisors game"],
+  "tags": ["tax", "math", "game", "divisors", "teacher", "students"],
+  "type": "web-app",
+  "category": "Games",
+  "location": "Dropbox/persistent-team/projects/tax_collector",
+  "stack": "HTML/CSS/JS + PHP (MySQL backend)",
+  "url": "https://www.yisumatica.org.il/tax/",
+  "deploy": {
+    "method": "FTP",
+    "server": "109.207.77.32",
+    "remote_path": "/public_html/tax/"
+  },
+  "db_tables": ["zzz_gove_misim", "zzz_gove_misim_sessions", "zzz_gove_misim_settings"],
+  "description": "Math game — pick numbers, tax collector takes divisors. Teacher controls 12/24 version for students remotely.",
+  "services": ["db-tools"]
+}

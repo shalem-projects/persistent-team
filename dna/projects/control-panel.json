@@ -1,0 +1,28 @@
+{
+  "project_id": "control-panel",
+  "aliases": ["control panel", "context ui", "context creator", "dna ui"],
+  "tags": ["context", "dna", "classifier", "ui", "generator", "learner", "email", "triage"],
+  "type": "tool",
+  "category": "System",
+  "location": "Dropbox/persistent-team/projects/control-panel",
+  "stack": "Python (stdlib http.server, no dependencies)",
+  "key_files": [
+    "context_ui.py",
+    "context_generator.py",
+    "classifier.py",
+    "ctx.bat"
+  ],
+  "url": "http://localhost:7890",
+  "description": "Web UI + CLI for generating project context to paste into Claude Code sessions",
+  "features": [
+    "Email triage: 3 tabs (Uncategorized/Categorized/Processed), dealt-with toggle, project assignment dropdown",
+    "Email metadata persists in email/email_meta.json (survives cache refreshes)",
+    "Sender-project memory: dropdown suggests last project used for that sender",
+    "Project card click filters email list to that project",
+    "Draggable borders: left/right panels + projects/emails split"
+  ],
+  "known_issues": [
+    "Must use python -B to avoid pyc caching on restart",
+    "Learner sub-agent not yet run on unprocessed sessions"
+  ]
+}

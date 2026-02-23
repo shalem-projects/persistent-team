@@ -1,0 +1,19 @@
+{
+  "project_id": "today",
+  "aliases": ["today", "task app", "daily tasks", "the task app", "today app"],
+  "tags": ["task", "tasks", "daily", "voice", "recurring", "pwa", "todo"],
+  "type": "web-app",
+  "location": "Dropbox/persistent-team/projects/today",
+  "stack": "PHP + MySQL + vanilla JS (single-file frontend)",
+  "deploy": {
+    "method": "FTP via curl",
+    "server": "109.207.77.32",
+    "path": "/public_html/today/",
+    "url": "https://www.yisumatica.org.il/today/"
+  },
+  "user_reg_code": "D2CVFC",
+  "db": "yisumonimyisumat_flash",
+  "tables": ["today_users", "today_tasks", "today_task_instances"],
+  "test_files": ["qa_test_registration.py", "qa_test_task_management.py", "qa3_test.py"],
+  "features": ["voice input (Whisper)", "text input (GPT-4o-mini parse)", "recurring tasks", "PWA installable"]
+}

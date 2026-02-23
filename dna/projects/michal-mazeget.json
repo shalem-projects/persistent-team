@@ -1,0 +1,13 @@
+{
+  "project_id": "michal-mazeget",
+  "aliases": ["michal", "מיכל", "mazeget", "michal site"],
+  "tags": ["presentation", "site", "michal"],
+  "type": "presentation",
+  "location": "projects/michal-mazeget",
+  "deploy": {
+    "method": "GitHub Pages",
+    "url": "https://aosshalem-dev.github.io/michal-mazeget/",
+    "repo": "aosshalem-dev/michal-mazeget"
+  },
+  "description": "Presentation site for Michal"
+}

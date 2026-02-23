@@ -1,0 +1,11 @@
+{
+  "project_id": "finance",
+  "aliases": ["finance", "expenses", "insurance", "credit cards", "personal finance"],
+  "tags": ["finance", "insurance", "credit", "expenses", "personal", "money", "dashboard"],
+  "type": "data-tool",
+  "location": "Dropbox/persistent-team/projects/finance",
+  "stack": "Python (stdlib)",
+  "description": "Personal finance management — insurance, credit card reports, expenses",
+  "url": "file:///C:/Users/User/Dropbox/persistent-team/projects/finance/dashboard.html",
+  "services": ["db-tools"]
+}

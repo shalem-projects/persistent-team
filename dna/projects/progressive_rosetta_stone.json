@@ -1,0 +1,9 @@
+{
+  "project_id": "progressive_rosetta_stone",
+  "aliases": ["rosetta stone", "progressive rosetta", "rosetta"],
+  "tags": ["progressive", "ideology", "education", "rosetta", "comparative", "research"],
+  "type": "research-site",
+  "location": "Dropbox/persistent-team/projects/progressive_rozzeta_stone",
+  "description": "Comparative analysis of progressive ideology influence on Israeli education — Rosetta Stone approach",
+  "services": ["research-tools"]
+}

@@ -1,0 +1,12 @@
+{
+  "project_id": "israel_science_academy",
+  "aliases": ["science academy", "sel pipeline", "sel research", "האקדמיה", "יוזמה", "academy of sciences"],
+  "tags": ["sel", "academy", "sciences", "pipeline", "unesco", "casel", "education", "ideology", "ministry"],
+  "type": "research",
+  "category": "Education",
+  "location": "Dropbox/persistent-team/projects/israel_science_academy",
+  "description": "Research into SEL (Social Emotional Learning) pipeline in Israel — from UNESCO/CASEL through the Israel Academy of Sciences (יוזמה) to Ministry of Education, שפ\"י, teacher training, and classrooms. Tracks ideological roots, institutional mechanisms, and evidence gaps.",
+  "source_material": "Dropbox/backup/04_Writing_Philosophy/אלכסון/SEL/",
+  "related_projects": ["education", "progressive_rosetta_stone"],
+  "services": ["research-tools"]
+}

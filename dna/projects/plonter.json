@@ -1,0 +1,19 @@
+{
+  "project_id": "plonter",
+  "aliases": ["plonter", "פלונטר", "arabic syntax", "arabic app"],
+  "tags": ["arabic", "syntax", "analysis", "education", "language"],
+  "type": "web-app",
+  "category": "Amitai",
+  "location": "Dropbox/persistent-team/projects/פלונטר",
+  "stack": "Vanilla JS (12 script files, no bundler), CSS, HTML",
+  "deploy": {
+    "method": "FTP via curl",
+    "server": "109.207.77.32",
+    "path": "/public_html/plonter6/",
+    "url": "https://www.yisumatica.org.il/plonter6/"
+  },
+  "test_files": ["tests/test_real_clicks.py"],
+  "test_port": 8790,
+  "cache_bust": "?v=4.X on all script/style URLs",
+  "description": "Arabic syntax analysis educational web app"
+}

@@ -1,0 +1,13 @@
+{
+  "project_id": "new-project",
+  "aliases": ["new project", "create project", "bootstrap project", "register project"],
+  "tags": ["new", "bootstrap", "create", "register", "template"],
+  "type": "tool",
+  "category": "System",
+  "location": "Dropbox/persistent-team/projects/new-project",
+  "stack": "Context only (no code)",
+  "key_files": [
+    "CLAUDE.md"
+  ],
+  "description": "Bootstrap context for creating and registering new projects in the DNA framework"
+}

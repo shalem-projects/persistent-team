@@ -1,0 +1,19 @@
+{
+  "project_id": "db-tools",
+  "aliases": ["db tools", "database tools", "database service", "sqlite service"],
+  "tags": ["database", "sql", "sqlite", "mcp", "service"],
+  "type": "internal-service",
+  "location": "Dropbox/persistent-team/projects/db-tools",
+  "description": "Centralized database access service. Provides direct SQL querying via MCP instead of writing Python scripts.",
+  "mcp_servers": {
+    "sqlite": {
+      "purpose": "Direct SQL queries against SQLite databases",
+      "cost": "Free (local)",
+      "usage": "Pass db path as argument: npx @modelcontextprotocol/server-sqlite <path-to-db>"
+    }
+  },
+  "consumers": [
+    "gmail",
+    "finance"
+  ]
+}

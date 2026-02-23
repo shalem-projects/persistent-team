@@ -1,0 +1,18 @@
+{
+  "project_id": "tnaim_assessment",
+  "aliases": ["tnaim assessment", "tnaim difficulty", "tnaim levels"],
+  "tags": ["tnaim", "assessment", "difficulty", "puzzle", "game", "levels"],
+  "type": "web-app",
+  "category": "games",
+  "location": "Dropbox/persistent-team/projects/mini_apps/games/tnaim_assessment",
+  "stack": "HTML + vanilla JS + PHP + MySQL",
+  "deploy": {
+    "method": "FTP via curl",
+    "server": "109.207.77.32",
+    "path": "/public_html/mini_apps/tnaim/assessment/",
+    "url": "https://www.yisumatica.org.il/mini_apps/tnaim/assessment/"
+  },
+  "db": "yisumonimyisumat_flash",
+  "tables": ["ZZZ_temp_tnaim_assessment"],
+  "description": "Difficulty assessment tool for tnaim (conditions) puzzle game boards6 levels"
+}

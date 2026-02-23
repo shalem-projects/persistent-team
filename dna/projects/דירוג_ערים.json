@@ -1,0 +1,27 @@
+{
+  "project_id": "דירוג_ערים",
+  "aliases": ["city ranking", "derug arim", "דירוג ערים", "city comparison"],
+  "tags": ["city", "ranking", "cities", "education", "municipal", "election", "research"],
+  "type": "research-site",
+  "location": "Dropbox/persistent-team/projects/דירוג_ערים",
+  "site_repo": "C:\\Users\\User\\derug-arim-site",
+  "deploy": {
+    "method": "GitHub Pages",
+    "url": "https://aosshalem-dev.github.io/derug-arim/"
+  },
+  "api": {
+    "endpoint": "gefen2/programs_metadata_api.php",
+    "db_config": "gefen2/config.php"
+  },
+  "protected_fields": {
+    "programs_metadata.description": {
+      "type": "human-curated",
+      "locked": true,
+      "count": 185,
+      "ai_sibling": "description_auto",
+      "backup": "excel_col_k_descriptions.json"
+    }
+  },
+  "description": "City ranking by education programs, municipal protocols, and election data. 18+ cities analyzed.",
+  "services": ["research-tools"]
+}

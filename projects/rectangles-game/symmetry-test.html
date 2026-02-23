@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>בדיקת צורות סימטריות</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: #fff;
+  color: #222;
+  user-select: none;
+}
+
+h1 { font-size: 1.8rem; margin-bottom: 0.5rem; }
+
+#controls {
+  display: flex;
+  gap: 1.2rem;
+  align-items: center;
+  margin-bottom: 0.8rem;
+}
+
+#controls label { font-size: 0.95rem; color: #555; }
+
+#controls select {
+  font-size: 1rem;
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
+  border: 1px solid #555;
+  background: #eee;
+  color: #222;
+  cursor: pointer;
+}
+
+#generate-btn {
+  font-size: 1.1rem;
+  padding: 0.5rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  background: #2a9d8f;
+  color: #fff;
+  cursor: pointer;
+  font-weight: bold;
+}
+#generate-btn:hover { background: #238b7e; }
+
+#info {
+  font-size: 0.95rem;
+  color: #666;
+  margin-bottom: 0.8rem;
+}
+
+#grid-container {
+  position: relative;
+  width: min(90vw, 480px);
+  height: min(90vw, 480px);
+}
+
+#grid {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  gap: 3px;
+  width: 100%;
+  height: 100%;
+  background: #333;
+  padding: 3px;
+  border-radius: 8px;
+}
+
+.cell {
+  background: #ddd;
+  border-radius: 4px;
+}
+
+.cell.shape1 { background: #4488ff; }
+.cell.shape2 { background: #ff4444; }
+
+#axis-line {
+  position: absolute;
+  background: #e63946;
+  z-index: 10;
+  pointer-events: none;
+  display: none;
+  opacity: 0.7;
+}
+#axis-line.vertical { width: 3px; border-radius: 2px; }
+#axis-line.horizontal { height: 3px; border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<h1>בדיקת צורות סימטריות</h1>
+
+<div id="controls">
+  <label for="area-select">שטח:</label>
+  <select id="area-select"></select>
+  <button id="generate-btn">צורה חדשה</button>
+</div>
+
+<div id="info"></div>
+
+<div id="grid-container">
+  <div id="grid"></div>
+  <div id="axis-line"></div>
+</div>
+
+<script>
+const GRID = 9;
+const gridEl = document.getElementById('grid');
+const infoEl = document.getElementById('info');
+const axisEl = document.getElementById('axis-line');
+const areaSelect = document.getElementById('area-select');
+
+for (const a of [5, 6, 7, 8, 9]) {
+  const opt = document.createElement('option');
+  opt.value = a; opt.textContent = a;
+  areaSelect.appendChild(opt);
+}
+areaSelect.value = 7;
+
+const K = (x, y) => `${x},${y}`;
+const P = k => k.split(',').map(Number);
+
+function generateShape(targetArea) {
+  const betweenCells = (targetArea % 2 === 0) && (Math.random() < 0.5);
+  const dirs = [[0,1],[0,-1],[1,0],[-1,0]];
+  const cells = new Set();
+  let count = 0;
+
+  if (betweenCells) {
+    cells.add(K(0, 0));
+    cells.add(K(-1, 0));
+    count = 2;
+
+    while (count < targetArea) {
+      if (targetArea - count < 2) break;
+      const seen = new Set();
+      const frontier = [];
+      for (const k of cells) {
+        const [x, y] = P(k);
+        if (x < 0) continue;
+        for (const [dx, dy] of dirs) {
+          const nx = x + dx, ny = y + dy;
+          if (nx < 0) continue;
+          const nk = K(nx, ny);
+          if (cells.has(nk) || seen.has(nk)) continue;
+          seen.add(nk);
+          frontier.push({ x: nx, y: ny });
+        }
+      }
+      if (frontier.length === 0) break;
+      const pick = frontier[Math.floor(Math.random() * frontier.length)];
+      cells.add(K(pick.x, pick.y));
+      cells.add(K(-1 - pick.x, pick.y));
+      count += 2;
+    }
+  } else {
+    cells.add(K(0, 0));
+    count = 1;
+
+    while (count < targetArea) {
+      const remaining = targetArea - count;
+      const seen = new Set();
+      const frontier = [];
+      for (const k of cells) {
+        const [x, y] = P(k);
+        if (x < 0) continue;
+        for (const [dx, dy] of dirs) {
+          const nx = x + dx, ny = y + dy;
+          if (nx < 0) continue;
+          const nk = K(nx, ny);
+          if (cells.has(nk) || seen.has(nk)) continue;
+          seen.add(nk);
+          const cost = nx === 0 ? 1 : 2;
+          if (cost <= remaining)
+            frontier.push({ x: nx, y: ny, cost, onAxis: nx === 0 });
+        }
+      }
+      if (frontier.length === 0) break;
+      const pick = frontier[Math.floor(Math.random() * frontier.length)];
+      cells.add(K(pick.x, pick.y));
+      if (!pick.onAxis) cells.add(K(-pick.x, pick.y));
+      count += pick.cost;
+    }
+  }
+
+  if (count !== targetArea) return null;
+
+  const rot = Math.floor(Math.random() * 4);
+  const rotated = new Set();
+  for (const k of cells) {
+    const [x, y] = P(k);
+    let rx, ry;
+    switch (rot) {
+      case 0: rx = x;  ry = y;  break;
+      case 1: rx = -y; ry = x;  break;
+      case 2: rx = -x; ry = -y; break;
+      case 3: rx = y;  ry = -x; break;
+    }
+    rotated.add(K(rx, ry));
+  }
+
+  let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+  for (const k of rotated) {
+    const [x, y] = P(k);
+    minX = Math.min(minX, x); maxX = Math.max(maxX, x);
+    minY = Math.min(minY, y); maxY = Math.max(maxY, y);
+  }
+
+  const shapeW = maxX - minX + 1;
+  const shapeH = maxY - minY + 1;
+  if (shapeW > GRID || shapeH > GRID) return null;
+
+  const offCol = Math.floor(Math.random() * (GRID - shapeW + 1));
+  const offRow = Math.floor(Math.random() * (GRID - shapeH + 1));
+
+  const gridCells = new Set();
+  for (const k of rotated) {
+    const [x, y] = P(k);
+    gridCells.add(K(y - minY + offRow, x - minX + offCol));
+  }
+
+  // Detect axis
+  const vAxis = offCol + (shapeW - 1) / 2;
+  let vOK = true;
+  for (const k of gridCells) {
+    const [r, c] = P(k);
+    if (!gridCells.has(K(r, 2 * vAxis - c))) { vOK = false; break; }
+  }
+  if (vOK) return { cells: gridCells, symmetry: 'vertical', axisPos: vAxis, area: gridCells.size, axisType: Number.isInteger(vAxis) ? 'through' : 'between' };
+
+  const hAxis = offRow + (shapeH - 1) / 2;
+  let hOK = true;
+  for (const k of gridCells) {
+    const [r, c] = P(k);
+    if (!gridCells.has(K(2 * hAxis - r, c))) { hOK = false; break; }
+  }
+  if (hOK) return { cells: gridCells, symmetry: 'horizontal', axisPos: hAxis, area: gridCells.size, axisType: Number.isInteger(hAxis) ? 'through' : 'between' };
+
+  return null;
+}
+
+let shape1 = null, shape2 = null;
+
+function overlaps(a, b) {
+  for (const k of a.cells) if (b.cells.has(k)) return true;
+  return false;
+}
+
+function render() {
+  gridEl.innerHTML = '';
+  for (let r = 0; r < GRID; r++) {
+    for (let c = 0; c < GRID; c++) {
+      const cell = document.createElement('div');
+      cell.className = 'cell';
+      const k = K(r, c);
+      if (shape1 && shape1.cells.has(k)) cell.classList.add('shape1');
+      else if (shape2 && shape2.cells.has(k)) cell.classList.add('shape2');
+      gridEl.appendChild(cell);
+    }
+  }
+
+  // Hide axis lines (two shapes = two axes, skip for clarity)
+  axisEl.style.display = 'none';
+
+  if (!shape1 || !shape2) return;
+
+  const s1sym = shape1.symmetry === 'vertical' ? 'אנכית' : 'אופקית';
+  const s1ax = shape1.axisType === 'through' ? 'דרך משבצת' : 'בין משבצות';
+  const s2sym = shape2.symmetry === 'vertical' ? 'אנכית' : 'אופקית';
+  const s2ax = shape2.axisType === 'through' ? 'דרך משבצת' : 'בין משבצות';
+  infoEl.textContent =
+    `כחול: שטח ${shape1.area}, ${s1sym} ${s1ax}  |  אדום: שטח ${shape2.area}, ${s2sym} ${s2ax}`;
+}
+
+function doGenerate() {
+  const area = parseInt(areaSelect.value);
+
+  // Generate first shape
+  shape1 = null;
+  for (let i = 0; i < 50; i++) {
+    const s = generateShape(area);
+    if (s && s.area === area) { shape1 = s; break; }
+  }
+  if (!shape1) { infoEl.textContent = 'לא הצלחתי ליצור צורה. נסה שטח אחר.'; return; }
+
+  // Generate second shape (non-overlapping)
+  shape2 = null;
+  for (let i = 0; i < 200; i++) {
+    const s = generateShape(area);
+    if (s && s.area === area && !overlaps(shape1, s)) { shape2 = s; break; }
+  }
+  if (!shape2) { infoEl.textContent = 'לא הצלחתי ליצור שתי צורות ללא חפיפה. נסה שטח קטן יותר.'; return; }
+
+  render();
+}
+
+document.getElementById('generate-btn').addEventListener('click', doGenerate);
+areaSelect.addEventListener('change', doGenerate);
+doGenerate();
+</script>
+</body>
+</html>

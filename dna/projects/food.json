@@ -1,0 +1,19 @@
+{
+  "project_id": "food",
+  "aliases": ["food cost", "catering", "food cost master", "the food thing"],
+  "tags": ["food", "catering", "hebrew", "rtl", "react", "management", "business", "costs"],
+  "type": "web-app",
+  "category": "Amitai",
+  "location": "Dropbox/persistent-team/projects/food",
+  "stack": "React 18 + Vite 5 + Tailwind CSS 3 + shadcn/ui",
+  "deploy": {
+    "method": "npm run build -> FTP upload dist/",
+    "server": "109.207.77.32",
+    "path": "/public_html/food/",
+    "url": "https://www.yisumatica.org.il/food/",
+    "htaccess_required": true
+  },
+  "data": "localStorage with CRUD abstraction (src/api/dataLayer.js)",
+  "description": "Hebrew RTL catering business management app (Food Cost Master)",
+  "known_gaps": ["No Playwright tests", "No ErrorBoundary", "No data export/import", "Recharts 424KB chunk"]
+}

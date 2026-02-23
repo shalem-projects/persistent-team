@@ -1,0 +1,15 @@
+{
+  "project_id": "education",
+  "aliases": ["education research", "education minisite", "education site"],
+  "tags": ["education", "research", "ideology", "unesco", "critical", "pedagogy", "israel", "sdg4"],
+  "type": "research-site",
+  "location": "Dropbox/persistent-team/projects/education-minisite",
+  "deploy": {
+    "method": "GitHub Pages",
+    "url": "https://aosshalem-dev.github.io/education-minisite/",
+    "repo": "aosshalem-dev/education-minisite"
+  },
+  "category": "Education",
+  "description": "Research into ideological influence on Israeli education — UNESCO/SDG4/GCED pipeline, critical pedagogy, activist pedagogy",
+  "services": ["research-tools"]
+}

@@ -1,0 +1,18 @@
+{
+  "project_id": "car_seating",
+  "aliases": ["car seating", "car game", "combinatorics game", "family car"],
+  "tags": ["car", "seating", "combinatorics", "arrangements", "game", "math", "education", "students"],
+  "type": "web-app",
+  "category": "Games",
+  "location": "Dropbox/persistent-team/projects/mini_apps/games/car_seating",
+  "stack": "HTML/CSS/JS + PHP (MySQL backend)",
+  "url": "https://www.yisumatica.org.il/mini_apps/car_seating/",
+  "deploy": {
+    "method": "FTP",
+    "server": "109.207.77.32",
+    "remote_path": "/public_html/mini_apps/car_seating/"
+  },
+  "db_tables": ["AA_ZZZ_game_car_sessions", "AA_ZZZ_game_car_events"],
+  "description": "Car seating combinatorics game — students find all arrangements of a family in a car",
+  "services": ["db-tools"]
+}

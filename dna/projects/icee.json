@@ -1,0 +1,11 @@
+{
+  "project_id": "icee",
+  "aliases": ["icee", "israel center", "excellence education", "fundraising crm"],
+  "tags": ["fundraising", "crm", "donors", "pipeline", "operations", "nonprofit"],
+  "type": "tool",
+  "category": "Work",
+  "location": "Dropbox/persistent-team/projects/icee",
+  "stack": "TBD",
+  "description": "Operations & CRM system for The Israel Center for Excellence through Education — fundraising pipeline, donor tracking, task management, email monitoring",
+  "services": ["research-tools"]
+}

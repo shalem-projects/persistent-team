@@ -1,0 +1,9 @@
+{
+  "project_id": "tnaim",
+  "aliases": ["tnaim", "conditions game", "tnaim game", "תנאים"],
+  "tags": ["tnaim", "conditions", "game", "puzzle", "logic"],
+  "type": "web-app",
+  "category": "Games",
+  "location": "Dropbox/persistent-team/projects/tnaim",
+  "description": "Tnaim game"
+}

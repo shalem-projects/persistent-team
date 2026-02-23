@@ -1,0 +1,9 @@
+{
+  "project_id": "second_brain",
+  "aliases": ["second brain", "thought classifier", "weekly digest"],
+  "tags": ["brain", "thought", "classifier", "digest", "ai"],
+  "type": "backend",
+  "location": "Dropbox/persistent-team/projects/second_brain",
+  "description": "AI-powered thought classifier and weekly digest generator",
+  "anthropic_key_location": "projects/second_brain/config.json"
+}

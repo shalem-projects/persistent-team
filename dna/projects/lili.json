@@ -1,0 +1,8 @@
+{
+  "project_id": "lili",
+  "aliases": ["lili", "lili bot", "telegram bot", "telegram capture"],
+  "tags": ["telegram", "bot", "capture", "queue", "brain"],
+  "type": "telegram-bot",
+  "location": "Dropbox/persistent-team/projects/lili",
+  "description": "Telegram-based capture interface for Second Brain with async queue processing"
+}

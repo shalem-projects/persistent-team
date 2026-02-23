@@ -1,0 +1,21 @@
+{
+  "project_id": "number-game",
+  "aliases": ["number game", "guessing game", "number guessing"],
+  "tags": ["number", "guessing", "hebrew", "education", "game", "math"],
+  "type": "product",
+  "category": "Education",
+  "location": "Dropbox/persistent-team/projects/number-game",
+  "stack": "HTML/CSS/JS (single file, no dependencies)",
+  "key_files": [
+    "index.html"
+  ],
+  "url": "https://aosshalem-dev.github.io/number-guessing-game/",
+  "github": "https://github.com/aosshalem-dev/number-guessing-game",
+  "description": "Hebrew number guessing game (1-20) with 9 yes/no questions — educational tool",
+  "features": [
+    "Numbers 1-20 in clickable circles",
+    "9 yes/no questions (even, divisible by 3/4/5, contains ש, etc.)",
+    "RTL Hebrew UI",
+    "GitHub Pages hosted"
+  ]
+}
